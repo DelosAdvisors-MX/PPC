@@ -1,0 +1,72 @@
+/* The panel is a fixed 480 x 320 surface. Nothing here may scroll, select,
+   bounce or highlight — it is a instrument face, not a web page. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #0b0e12;
+  color: #101720;
+  font-family: "Ping LCG", var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* The screen has no light/dark switch; the design is light, always. */
+  color-scheme: light;
+}
+
+body {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: none;
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage-panel {
+  transform-origin: center center;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.deck-viewport {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+
+.deck-viewport:active {
+  cursor: grabbing;
+}
+
+.deck-grid {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.deck-cell {
+  position: absolute;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-grid {
+    transition: none !important;
+  }
+}
