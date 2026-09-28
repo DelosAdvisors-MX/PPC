@@ -1,6 +1,7 @@
 import { COLOR, SVG_FONT } from "@/lib/tokens";
 import { decimal } from "@/lib/format";
 import { zeroBasedTicks } from "./scale";
+import { topRoundedBar } from "./shapes";
 
 const W = 422;
 const H = 174;
@@ -45,12 +46,6 @@ export function DailyBars({ values, label }: Props) {
       role="img"
       aria-label={`${label}: average ${decimal(average)} kWh a day, highest ${decimal(peak)} on the ${peakIndex + 1}, lowest ${decimal(low)}`}
     >
-      <defs>
-        <clipPath id="dailyClip">
-          <rect x={0} y={0} width={W} height={BASE} />
-        </clipPath>
-      </defs>
-
       {ticks.map((tick) => (
         <line
           key={tick}
@@ -77,20 +72,13 @@ export function DailyBars({ values, label }: Props) {
         </text>
       ))}
 
-      {/* Bars overshoot the zero line and are clipped, so only the top corners round. */}
-      <g clipPath="url(#dailyClip)">
-        {values.map((value, i) => (
-          <rect
-            key={i}
-            x={barX(i).toFixed(2)}
-            y={y(value).toFixed(1)}
-            width={barW.toFixed(2)}
-            height={(BASE - y(value) + RADIUS + 1).toFixed(1)}
-            rx={RADIUS}
-            fill={i === peakIndex ? COLOR.magenta : COLOR.blue}
-          />
-        ))}
-      </g>
+      {values.map((value, i) => (
+        <path
+          key={i}
+          d={topRoundedBar(barX(i), y(value), barW, BASE - y(value), RADIUS)}
+          fill={i === peakIndex ? COLOR.magenta : COLOR.blue}
+        />
+      ))}
 
       <line
         x1={AXIS_X}

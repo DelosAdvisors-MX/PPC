@@ -16,7 +16,8 @@ body {
   overscroll-behavior: none;
   background: #0b0e12;
   color: #101720;
-  font-family: "Ping LCG", var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: "Ping LCG", "Source Sans 3", "Helvetica Neue", Helvetica, Arial,
+    "Liberation Sans", "DejaVu Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* The screen has no light/dark switch; the design is light, always. */

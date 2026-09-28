@@ -1,5 +1,6 @@
 import { COLOR, SVG_FONT } from "@/lib/tokens";
 import { kwh, percentOf } from "@/lib/format";
+import { topRoundedBar } from "./shapes";
 
 const PLOT_LEFT = 42;
 const PLOT_RIGHT = 182;
@@ -33,7 +34,6 @@ export function FillBar({ usedKwh, estimateKwh, closed }: Props) {
   // Above the bar normally; once the bar reaches the ceiling there is no room
   // left, so the figure moves inside it and flips to white.
   const labelInside = top < 24;
-  const clipId = closed ? "fillClipClosed" : "fillClipLive";
 
   return (
     <svg
@@ -44,12 +44,6 @@ export function FillBar({ usedKwh, estimateKwh, closed }: Props) {
       aria-label={`${kwh(usedKwh)} of the ${kwh(estimateKwh)} estimate, ${percentOf(usedKwh, estimateKwh)} percent`}
       style={{ marginTop: 6 }}
     >
-      <defs>
-        <clipPath id={clipId}>
-          <rect x={PLOT_LEFT} y={0} width={PLOT_RIGHT - PLOT_LEFT} height={BASE} />
-        </clipPath>
-      </defs>
-
       {!over && (
         <line x1={PLOT_LEFT} y1={TOP} x2={PLOT_RIGHT} y2={TOP} stroke={COLOR.gridLight} strokeWidth={1} />
       )}
@@ -75,16 +69,7 @@ export function FillBar({ usedKwh, estimateKwh, closed }: Props) {
         </text>
       ))}
 
-      <g clipPath={`url(#${clipId})`}>
-        <rect
-          x={BAR_X}
-          y={top.toFixed(1)}
-          width={BAR_W}
-          height={(BASE - top + RADIUS).toFixed(1)}
-          rx={RADIUS}
-          fill={accent}
-        />
-      </g>
+      <path d={topRoundedBar(BAR_X, top, BAR_W, BASE - top, RADIUS)} fill={accent} />
 
       {over && (
         <line

@@ -64,9 +64,24 @@ export const INSIGHT_GRADIENT =
  * carries the design until the licensed file is dropped into src/app/fonts
  * and wired up with next/font/local.
  */
+/**
+ * Real family names, never `var(--font-sans)`.
+ *
+ * A custom property that fails to substitute takes the whole declaration with
+ * it, so the browser falls back to its own default rather than to the next
+ * name in the list. On a panel whose default is a bitmap monospace face that
+ * is the difference between the design and something unreadable. next/font
+ * registers these under their real names, so naming them directly costs
+ * nothing and removes the dependency.
+ *
+ * The tail is deliberately long: on a stripped embedded image `sans-serif`
+ * can resolve to whatever single face happens to be installed, so real sans
+ * faces are named first.
+ */
 export const FONT_STACK =
-  "'Ping LCG', var(--font-sans), system-ui, -apple-system, sans-serif";
-export const MONO_STACK = "var(--font-mono), ui-monospace, monospace";
+  "'Ping LCG', 'Source Sans 3', 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif";
+export const MONO_STACK =
+  "'IBM Plex Mono', 'DejaVu Sans Mono', 'Liberation Mono', 'Courier New', ui-monospace, monospace";
 
 /** Every inline SVG label uses this so it matches the DOM text around it. */
 export const SVG_FONT = FONT_STACK;

@@ -1,5 +1,6 @@
 import { COLOR, SVG_FONT } from "@/lib/tokens";
 import { thousands } from "@/lib/format";
+import { topRoundedBar } from "./shapes";
 
 const W = 218;
 const H = 238;
@@ -34,27 +35,15 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
       role="img"
       aria-label={`Your home ${thousands(myKwh)} ${unitLabel}; similar homes ${thousands(theirKwh)}`}
     >
-      <defs>
-        <clipPath id="compareClip">
-          <rect x={0} y={0} width={W} height={BASE} />
-        </clipPath>
-      </defs>
-
       <line x1={0} y1={BASE} x2={W} y2={BASE} stroke={COLOR.axis} strokeWidth={1} />
 
-      <g clipPath="url(#compareClip)">
-        {bars.map((bar) => (
-          <rect
-            key={bar.x}
-            x={bar.x}
-            y={top(bar.value).toFixed(1)}
-            width={BAR_W}
-            height={(BASE - top(bar.value) + RADIUS - 1).toFixed(1)}
-            rx={RADIUS}
-            fill={bar.fill}
-          />
-        ))}
-      </g>
+      {bars.map((bar) => (
+        <path
+          key={bar.x}
+          d={topRoundedBar(bar.x, top(bar.value), BAR_W, BASE - top(bar.value), RADIUS)}
+          fill={bar.fill}
+        />
+      ))}
 
       {bars.map((bar) => (
         <text

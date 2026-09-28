@@ -100,6 +100,18 @@ board reading the meter", options 1 and 2 get there with this codebase as-is.
 - **Ping LCG** is the brand face and is first in the font stack, but it is not
   on Google Fonts. Source Sans 3 carries the design until the licensed file is
   dropped into `src/app/fonts` and loaded with `next/font/local`.
+- **No `var()` in a font-family, and no `clip-path`.** Both are fine in a
+  desktop browser and both were observed failing on the panel. A custom
+  property that fails to substitute invalidates the whole declaration, so the
+  browser falls back to its own default rather than to the next name in the
+  list — and that default can be a bitmap monospace face. `clip-path` being
+  ignored gave every bar a rounded foot hanging below the zero line. The
+  stacks in `src/lib/tokens.ts` now name real families, and the bars are drawn
+  as top-rounded paths (`src/components/ui/shapes.ts`).
+- **If the panel still shows a fallback face**, the webfont itself is not
+  loading: check that `/_next/static/media/*.woff2` is reachable from the
+  device and that its browser supports woff2. The long fallback chain means a
+  miss degrades to a real sans face rather than to a bitmap one.
 
 ## Layout
 
