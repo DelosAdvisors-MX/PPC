@@ -2,13 +2,14 @@
   "name": "ppc-smart-meter-display",
   "version": "0.1.0",
   "private": true,
-  "description": "PPC Smart Meter Display — V2, 480 x 320 on a 3.5 inch panel",
+  "description": "PPC Smart Meter Display \u2014 V2, 480 x 320 on a 3.5 inch panel",
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 3000",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gen:firmware": "node scripts/gen-firmware-data.mjs"
   },
   "dependencies": {
     "next": "15.5.4",
