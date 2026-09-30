@@ -45,10 +45,17 @@ npm run dev          # in one terminal
 npm run pdf          # in another
 ```
 
-Writes `docs/ppc-smart-meter-display-screens.pdf`: a cover carrying the screen
-map, then each screen on its own A4 landscape page at exactly twice its real
-size, with a note on what it is for. `/print` renders it, so the pages come
-from the same components as the panel and cannot fall out of date.
+Writes `docs/ppc-smart-meter-display-screens.pdf`, eleven A4 landscape pages:
+
+- **The screen map** — every screen as a thumbnail in its place, with a line
+  to each screen you can reach from it. It answers "what sits next to what"
+  without anyone having to hold the grid in their head.
+- **Then each screen** on its own page at exactly twice its real size, with a
+  note on what it is for and where it sits.
+
+`/print` renders it, so both the map and the pages come from the same
+components as the panel and cannot fall out of date. The thumbnails are the
+real screens at 0.35, not screenshots.
 
 It drives the Chrome that is already installed rather than pulling in a second
 browser; set `CHROME` if it lives somewhere unusual.
