@@ -1,0 +1,159 @@
+/* A4 landscape, one screen per sheet. The panel is 3:2, so landscape wastes
+   the least paper and leaves room for a caption under each render. */
+/* A4 landscape is 297 x 210mm; at 8mm margins the printable area is
+   1062 x 733px. A sheet is head 29 + frame 642 + note 33 plus gaps, which
+   leaves just enough room to keep the screen at exactly 2x. */
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
+/* Chrome drops background colours when printing unless told otherwise, which
+   would take the telegram's dark panel, the amber badge and every gradient
+   with it. */
+.print-root,
+.print-root *,
+.print-root *::before,
+.print-root *::after {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* The panel styles apply to every route; this page has to opt out of them so
+   it can be scrolled while it is being reviewed. */
+html:has(.print-root),
+html:has(.print-root) body {
+  overflow: auto;
+  height: auto;
+  background: #ffffff;
+}
+
+.print-root {
+  background: #ffffff;
+  color: #101720;
+}
+
+.sheet {
+  /* Chrome honours both; older engines only understand page-break-after. */
+  break-after: page;
+  page-break-after: always;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sheet:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.sheet-head {
+  width: 960px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #dfe4eb;
+}
+
+.sheet-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.sheet-meta {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5a6470;
+}
+
+/* The screen is 480x320 by definition. Doubling it keeps every pixel of the
+   design on a whole-number boundary, so nothing resamples in the PDF. */
+.screen-frame {
+  width: 960px;
+  height: 640px;
+  margin-top: 10px;
+  outline: 1px solid #c6ceda;
+  overflow: hidden;
+}
+
+.screen-scale {
+  width: 480px;
+  height: 320px;
+  transform: scale(2);
+  transform-origin: top left;
+}
+
+.sheet-note {
+  width: 960px;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #5a6470;
+}
+
+/* Cover */
+.cover-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.cover-sub {
+  font-size: 15px;
+  color: #5a6470;
+  margin-top: 6px;
+}
+
+.map {
+  margin-top: 26px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.map th,
+.map td {
+  border: 1px solid #dfe4eb;
+  padding: 9px 12px;
+  text-align: left;
+}
+
+.map th {
+  font-weight: 700;
+  background: #edf0f4;
+}
+
+.map td.empty {
+  background: #f7f9fb;
+  color: #9aa3ad;
+}
+
+.map .row-label {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.legend {
+  margin-top: 22px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a6470;
+  max-width: 900px;
+}
+
+@media screen {
+  /* So the page is reviewable in a browser before it is printed. */
+  .print-root {
+    padding: 24px;
+  }
+  .sheet {
+    margin-bottom: 40px;
+  }
+}
+
+/* A cover that runs long would otherwise push the first screen onto its own
+   half-page; each sheet owns exactly one page. */
+.sheet {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}

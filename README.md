@@ -3,7 +3,7 @@
 The "PPC Smart Meter Display — V2" design, built as a Next.js app that renders
 at exactly **480 × 320** — the landscape size of a 3.5 inch panel.
 
-Eleven screens, no on-screen chrome, navigated entirely by swipe.
+Ten screens, no on-screen chrome, navigated entirely by swipe.
 
 ## The screen map
 
@@ -37,6 +37,28 @@ npm run build && npm start
 The stage scales the 480 × 320 canvas to fit whatever viewport it lands in, so
 the design can be checked at size in a desktop browser. On the panel the scale
 is exactly 1 and nothing is resampled.
+
+## A PDF of every screen
+
+```bash
+npm run dev          # in one terminal
+npm run pdf          # in another
+```
+
+Writes `docs/ppc-smart-meter-display-screens.pdf`: a cover carrying the screen
+map, then each screen on its own A4 landscape page at exactly twice its real
+size, with a note on what it is for. `/print` renders it, so the pages come
+from the same components as the panel and cannot fall out of date.
+
+It drives the Chrome that is already installed rather than pulling in a second
+browser; set `CHROME` if it lives somewhere unusual.
+
+Two things that page has to undo, both worth knowing if you edit it. The panel
+styles fix the root to one viewport and paint a dark surround, which on paper
+clips the job to a single page — `globals.css` reverses that under
+`@media print`. And Chrome drops background colours when printing unless
+`print-color-adjust: exact` says otherwise, which would take the telegram's
+dark panel, the amber badges and every gradient with it.
 
 ## Where the data comes from
 

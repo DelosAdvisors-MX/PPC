@@ -71,3 +71,17 @@ body {
     transition: none !important;
   }
 }
+
+/* The rules above describe a panel: fixed size, no scrolling, dark surround.
+   Paper is none of those things, and `overflow: hidden` on the root clips a
+   print job to a single viewport. */
+@media print {
+  html,
+  body {
+    overflow: visible;
+    height: auto;
+    background: #ffffff;
+    user-select: auto;
+    touch-action: auto;
+  }
+}

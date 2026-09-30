@@ -9,7 +9,8 @@
     "start": "next start -H 0.0.0.0 -p 3000",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "gen:firmware": "node scripts/gen-firmware-data.mjs"
+    "gen:firmware": "node scripts/gen-firmware-data.mjs",
+    "pdf": "node scripts/export-pdf.mjs"
   },
   "dependencies": {
     "next": "15.5.4",
