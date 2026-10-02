@@ -11,8 +11,10 @@ const AXIS_X = 34; // left edge of the plot, labels sit to its left
 const RADIUS = 3;
 
 interface Props {
-  /** One kWh figure per day of the month. */
+  /** One kWh figure per day so far. */
   values: number[];
+  /** Days the month holds. Bars are spaced across all of them. */
+  daysInMonth: number;
   label: string;
 }
 
@@ -21,7 +23,7 @@ interface Props {
  * rule. The y axis starts at zero and ends on a round number, so the bars can
  * be read as quantities rather than just compared with each other.
  */
-export function DailyBars({ values, label }: Props) {
+export function DailyBars({ values, daysInMonth, label }: Props) {
   const days = values.length;
   const peak = Math.max(...values);
   const peakIndex = values.indexOf(peak);
@@ -31,12 +33,15 @@ export function DailyBars({ values, label }: Props) {
   const { max, ticks } = zeroBasedTicks(peak);
   const y = (v: number) => BASE - (v / max) * (BASE - TOP);
 
-  const band = (W - AXIS_X) / days;
+  // Spaced across the whole month, not across the data: five days into
+  // October should look like five days into October, not like a five-day
+  // month. Same reasoning as the year chart leaving its unlived months empty.
+  const band = (W - AXIS_X) / Math.max(daysInMonth, days);
   const barW = Math.max(4, Math.min(11, band * 0.72));
   const barX = (i: number) => AXIS_X + i * band + (band - barW) / 2;
   const centre = (i: number) => AXIS_X + i * band + band / 2;
 
-  const dayTicks = [1, 8, 15, 22, 29].filter((d) => d <= days);
+  const dayTicks = [1, 8, 15, 22, 29].filter((d) => d <= daysInMonth);
 
   return (
     <svg
@@ -65,7 +70,7 @@ export function DailyBars({ values, label }: Props) {
           textAnchor="end"
           fontFamily={SVG_FONT}
           fontSize={11.5}
-          fontWeight={600}
+          fontWeight={700}
           fill={COLOR.muted}
         >
           {tick}
@@ -113,8 +118,8 @@ export function DailyBars({ values, label }: Props) {
           textAnchor="middle"
           fontFamily={SVG_FONT}
           fontSize={12}
-          fontWeight={600}
-          fill={COLOR.muted}
+          fontWeight={700}
+          fill={day <= days ? COLOR.muted : COLOR.axis}
         >
           {day}
         </text>

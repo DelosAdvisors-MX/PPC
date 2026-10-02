@@ -20,14 +20,20 @@ const CEILING = BASE / PX_PER_KWH;
 const TICKS = [0, 200, 400, 600];
 const LABELLED_MONTHS = [0, 2, 4, 6, 8, 10];
 
+/** The axis is always a whole year, however many months have happened. */
+const MONTHS_IN_YEAR = 12;
+
 interface Props {
-  /** Twelve kWh figures, January first. */
+  /** Up to twelve kWh figures, January first. A year in progress sends fewer. */
   values: number[];
   label: string;
 }
 
 export function YearLine({ values, label }: Props) {
-  const step = (PLOT_RIGHT - PLOT_LEFT) / (values.length - 1);
+  // Spaced across the whole year rather than across the data, so a year in
+  // progress leaves the rest of the axis empty instead of stretching to fill
+  // it — the line stops where the months do.
+  const step = (PLOT_RIGHT - PLOT_LEFT) / (MONTHS_IN_YEAR - 1);
   const x = (i: number) => PLOT_LEFT + i * step;
   const y = (v: number) => BASE - Math.min(v, CEILING) * PX_PER_KWH;
 
@@ -50,7 +56,8 @@ export function YearLine({ values, label }: Props) {
 
   const points = values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`);
   const line = `M${points.join(" L")}`;
-  const area = `${line} L${x(values.length - 1).toFixed(1)},${BASE} L${PLOT_LEFT},${BASE} Z`;
+  const lastMonth = values.length - 1;
+  const area = `${line} L${x(lastMonth).toFixed(1)},${BASE} L${PLOT_LEFT},${BASE} Z`;
 
   return (
     <svg
@@ -99,7 +106,7 @@ export function YearLine({ values, label }: Props) {
         strokeLinejoin="round"
       />
 
-      {LABELLED_MONTHS.map((i) => (
+      {LABELLED_MONTHS.filter((i) => i < values.length).map((i) => (
         <circle key={i} cx={x(i).toFixed(1)} cy={y(values[i]).toFixed(1)} r={3.5} fill={COLOR.blue} />
       ))}
 
@@ -128,6 +135,8 @@ export function YearLine({ values, label }: Props) {
         {thousands(peak)}
       </text>
 
+      {/* Months still to come keep their label but fade, so the gap reads as
+          "not yet" rather than as a chart that stops early. */}
       {LABELLED_MONTHS.map((i) => (
         <text
           key={i}
@@ -136,8 +145,8 @@ export function YearLine({ values, label }: Props) {
           textAnchor="middle"
           fontFamily={SVG_FONT}
           fontSize={12}
-          fontWeight={600}
-          fill={COLOR.muted}
+          fontWeight={700}
+          fill={i < values.length ? COLOR.muted : COLOR.axis}
         >
           {MONTH_LABELS[i]}
         </text>

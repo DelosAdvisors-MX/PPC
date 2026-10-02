@@ -8,10 +8,10 @@ import { FillBar } from "@/components/ui/FillBar";
 
 const CAPTION = {
   fontSize: 13,
-  fontWeight: 600,
+  fontWeight: 700,
   letterSpacing: "0.08em",
   textTransform: "uppercase",
-  color: COLOR.muted,
+  color: COLOR.ink,
 } as const;
 
 /** One figure with its caption, used down the closed month's left column. */
@@ -22,7 +22,7 @@ function Stat({ value, unit, caption, size }: { value: string; unit: string; cap
         <span style={{ fontSize: size, fontWeight: 700, lineHeight: 1, color: COLOR.ink }}>
           {value}
         </span>
-        <span style={{ fontSize: size * 0.42, fontWeight: 700, color: COLOR.muted }}>{unit}</span>
+        <span style={{ fontSize: size * 0.42, fontWeight: 700, color: COLOR.ink }}>{unit}</span>
       </div>
       <div style={{ ...CAPTION, marginTop: 4 }}>{caption}</div>
     </div>
@@ -114,9 +114,9 @@ export function Home({ data }: { data: HomeScreenData }) {
         <div
           style={{
             fontSize: 13,
-            fontWeight: 600,
+            fontWeight: 700,
             lineHeight: 1.35,
-            color: COLOR.muted,
+            color: COLOR.ink,
             flexShrink: 0,
           }}
         >
@@ -134,8 +134,7 @@ export function Home({ data }: { data: HomeScreenData }) {
         <div
           style={{
             ...CAPTION,
-            fontWeight: progress.closed ? 700 : 600,
-            color: progress.closed ? COLOR.magenta : COLOR.muted,
+            color: progress.closed ? COLOR.magenta : COLOR.ink,
             marginTop: 4,
           }}
         >

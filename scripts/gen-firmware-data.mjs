@@ -98,10 +98,10 @@ const data = `${BANNER}#pragma once
  */
 namespace sample {
 
-${floatArray("kAugustDaily", SAMPLE.medium.daily)}
-${floatArray("kJulyDaily", SAMPLE.mediumPrev.daily)}
-${floatArray("k2026Monthly", SAMPLE.high.monthly)}
-${floatArray("k2025Monthly", SAMPLE.highPrev.monthly)}
+${floatArray("kCurrentDaily", SAMPLE.medium.daily)}
+${floatArray("kPreviousDaily", SAMPLE.mediumPrev.daily)}
+${floatArray("kCurrentYear", SAMPLE.high.monthly)}
+${floatArray("kPreviousYear", SAMPLE.highPrev.monthly)}
 
 inline constexpr LiveReading kHomeLive = {${f(SAMPLE.home.live.kw)}, ${f(SAMPLE.home.live.scaleKw)}, ${cstr(SAMPLE.home.live.caption)}};
 inline constexpr PeriodAverages kHomePrevAverages = {${f(SAMPLE.homePrev.averages.kw)}, ${f(SAMPLE.homePrev.averages.kwhPerDay)}};
@@ -122,10 +122,10 @@ ${homeStruct("Home", SAMPLE.home)},
 ${homeStruct("HomePrev", SAMPLE.homePrev)},
     {${cstr(SAMPLE.appliances.headline)}, ${cstr(SAMPLE.appliances.intro)},
      kAppliances, ${SAMPLE.appliances.items.length}},
-    {${cstr(SAMPLE.medium.title)}, kAugustDaily, ${SAMPLE.medium.daily.length}},
-    {${cstr(SAMPLE.mediumPrev.title)}, kJulyDaily, ${SAMPLE.mediumPrev.daily.length}},
-    {${cstr(SAMPLE.high.title)}, k2026Monthly},
-    {${cstr(SAMPLE.highPrev.title)}, k2025Monthly},
+    {${cstr(SAMPLE.medium.title)}, kCurrentDaily, ${SAMPLE.medium.daily.length}, ${SAMPLE.medium.daysInMonth}},
+    {${cstr(SAMPLE.mediumPrev.title)}, kPreviousDaily, ${SAMPLE.mediumPrev.daily.length}, ${SAMPLE.mediumPrev.daysInMonth}},
+    {${cstr(SAMPLE.high.title)}, kCurrentYear, ${SAMPLE.high.monthly.length}},
+    {${cstr(SAMPLE.highPrev.title)}, kPreviousYear, ${SAMPLE.highPrev.monthly.length}},
 ${compareStruct(SAMPLE.compare, "kCompareChips")},
 ${compareStruct(SAMPLE.comparePrev, "kCompareChips")},
     {kTelegramLines, ${SAMPLE.telegram.lines.length}, ${cstr(SAMPLE.telegram.highlight)}}};

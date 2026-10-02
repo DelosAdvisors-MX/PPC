@@ -9,6 +9,8 @@ import { InsightHeader } from "./InsightHeader";
 export function High({ data }: { data: YearInsight }) {
   const total = data.monthly.reduce((sum, v) => sum + v, 0);
   const average = total / data.monthly.length;
+  // A year in progress has no year total yet, only a running one.
+  const complete = data.monthly.length >= 12;
 
   return (
     <Screen title={data.title} style={{ flexDirection: "column", gap: 10 }}>
@@ -26,7 +28,7 @@ export function High({ data }: { data: YearInsight }) {
         >
           <span style={EYEBROW}>kWh a month</span>
           <span style={{ fontSize: 13, fontWeight: 700, color: COLOR.ink }}>
-            Total year {thousands(total)} kWh
+            {complete ? "Total year" : "Total so far"} {thousands(total)} kWh
           </span>
         </div>
 

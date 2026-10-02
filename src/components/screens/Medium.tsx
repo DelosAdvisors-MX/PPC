@@ -36,7 +36,7 @@ export function Medium({ data }: { data: DailyInsight }) {
           </span>
         </div>
 
-        <DailyBars values={data.daily} label={data.title} />
+        <DailyBars values={data.daily} daysInMonth={data.daysInMonth} label={data.title} />
       </div>
     </Screen>
   );

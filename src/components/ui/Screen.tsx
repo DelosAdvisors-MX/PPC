@@ -42,11 +42,16 @@ export const CARD: CSSProperties = {
   overflow: "hidden",
 };
 
-/** Small uppercase caption used under charts and beside units. */
+/**
+ * Small uppercase caption used under charts and beside units.
+ *
+ * Bold and near-black rather than grey: at 13px on a 3.5 inch panel held at
+ * arm's length, grey-on-white is the first thing to disappear.
+ */
 export const EYEBROW: CSSProperties = {
   fontSize: 13,
   fontWeight: 700,
   letterSpacing: "0.08em",
   textTransform: "uppercase",
-  color: COLOR.muted,
+  color: COLOR.ink,
 };

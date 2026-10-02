@@ -14,7 +14,9 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
-  background: #0b0e12;
+  /* White to the edges. The panel is a white instrument face, and a dark
+     surround only ever showed up as a border on the real hardware. */
+  background: #ffffff;
   color: #101720;
   font-family: "Ping LCG", "Source Sans 3", "Helvetica Neue", Helvetica, Arial,
     "Liberation Sans", "DejaVu Sans", sans-serif;

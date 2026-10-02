@@ -38,7 +38,7 @@ const SHEETS: Sheet[] = [
     screen: <Home data={SAMPLE.home} />,
   },
   {
-    title: "Home · August",
+    title: "Home · September",
     position: "column 2 · previous period",
     note: "A closed month has no live reading, so the dial is replaced by what the month averaged. Past 100% the bar stops at the ceiling and the overshoot is told in the caption.",
     screen: <Home data={SAMPLE.homePrev} />,
@@ -50,13 +50,13 @@ const SHEETS: Sheet[] = [
     screen: <Telegram lines={SAMPLE.telegram.lines} highlight={SAMPLE.telegram.highlight} />,
   },
   {
-    title: "Medium · August",
+    title: "Medium · October",
     position: "column 3 · current",
-    note: "One month, day by day. The y axis ends on a round number rather than on the data, so July and August share a scale and can be compared by flicking between them.",
+    note: "One month, day by day. October is five days old, and the bars are spaced across all thirty-one so the month keeps its true width. The y axis ends on a round number, so two months share a scale and can be compared by flicking between them.",
     screen: <Medium data={SAMPLE.medium} />,
   },
   {
-    title: "Medium · July",
+    title: "Medium · September",
     position: "column 3 · previous period",
     note: "Same screen, one period back.",
     screen: <Medium data={SAMPLE.mediumPrev} />,
@@ -64,13 +64,13 @@ const SHEETS: Sheet[] = [
   {
     title: "High · 2026",
     position: "column 4 · current",
-    note: "Twelve months, January first. The y axis is fixed rather than fitted, so 2025 and 2026 can be compared without the chart rescaling underneath.",
+    note: "The year so far, January first. The line stops at the last closed month and leaves the rest of the axis empty rather than drawing months that have not happened. The y axis is fixed rather than fitted, so 2025 and 2026 compare without rescaling.",
     screen: <High data={SAMPLE.high} />,
   },
   {
     title: "High · 2025",
     position: "column 4 · previous period",
-    note: "January is the year's peak here, which leaves no room above the dot — the label moves alongside it rather than being clipped.",
+    note: "A closed year, all twelve months. January is its peak, which leaves no room above the dot — the label moves alongside it rather than being clipped.",
     screen: <High data={SAMPLE.highPrev} />,
   },
   {
@@ -80,7 +80,7 @@ const SHEETS: Sheet[] = [
     screen: <Compare data={SAMPLE.compare} />,
   },
   {
-    title: "Compare · August",
+    title: "Compare · September",
     position: "column 5 · previous period",
     note: "The same comparison for one closed month.",
     screen: <Compare data={SAMPLE.comparePrev} />,
@@ -93,14 +93,14 @@ const SHEETS: Sheet[] = [
  * is the direction the legend describes: swipe up goes one period back.
  */
 const MAP: MapCell[] = [
-  { column: 1, row: 0, label: "Home · August", screen: <Home data={SAMPLE.homePrev} /> },
-  { column: 2, row: 0, label: "Medium · July", screen: <Medium data={SAMPLE.mediumPrev} /> },
+  { column: 1, row: 0, label: "Home · September", screen: <Home data={SAMPLE.homePrev} /> },
+  { column: 2, row: 0, label: "Medium · September", screen: <Medium data={SAMPLE.mediumPrev} /> },
   { column: 3, row: 0, label: "High · 2025", screen: <High data={SAMPLE.highPrev} /> },
-  { column: 4, row: 0, label: "Compare · August", screen: <Compare data={SAMPLE.comparePrev} /> },
+  { column: 4, row: 0, label: "Compare · September", screen: <Compare data={SAMPLE.comparePrev} /> },
 
   { column: 0, row: 1, label: "Appliances", screen: <Appliances {...SAMPLE.appliances} /> },
   { column: 1, row: 1, label: "Home", screen: <Home data={SAMPLE.home} /> },
-  { column: 2, row: 1, label: "Medium · August", screen: <Medium data={SAMPLE.medium} /> },
+  { column: 2, row: 1, label: "Medium · October", screen: <Medium data={SAMPLE.medium} /> },
   { column: 3, row: 1, label: "High · 2026", screen: <High data={SAMPLE.high} /> },
   { column: 4, row: 1, label: "Compare", screen: <Compare data={SAMPLE.compare} /> },
 

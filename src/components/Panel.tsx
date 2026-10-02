@@ -1,7 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import type { MeterSnapshot } from "@/lib/types";
 import { useMeter } from "@/lib/useMeter";
+import { useLiveDemo } from "@/lib/useLiveDemo";
+import { withLive } from "@/lib/live";
 import { Stage } from "./Stage";
 import { Deck, type Cell } from "./Deck";
 import { Home } from "./screens/Home";
@@ -17,7 +20,15 @@ const COL = { appliances: 0, home: 1, medium: 2, high: 3, compare: 4 } as const;
 const ROW = { previous: -1, current: 0, raw: 1 } as const;
 
 export function Panel({ snapshot }: { snapshot: MeterSnapshot }) {
-  const meter = useMeter(snapshot);
+  const reading = useMeter(snapshot);
+  const live = useLiveDemo();
+
+  // One signal drives the needle, the reading under it and the telegram's
+  // three live fields, so they cannot disagree.
+  const meter = useMemo(
+    () => withLive(reading, live.kw, live.elapsedMs, live.now),
+    [reading, live.kw, live.elapsedMs, live.now],
+  );
 
   const cells: Cell[] = [
     {

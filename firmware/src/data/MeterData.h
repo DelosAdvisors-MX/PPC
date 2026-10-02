@@ -58,12 +58,17 @@ struct AppliancesData {
 struct DailyInsight {
   const char* title;
   const float* daily;
+  /** Days with a reading. A month in progress has fewer than it holds. */
   size_t days;
+  /** Days the month holds, so the chart keeps the month's true width. */
+  size_t days_in_month;
 };
 
 struct YearInsight {
   const char* title;
-  const float* monthly;  // always twelve, January first
+  const float* monthly;  // January first
+  /** Months closed so far. Under twelve leaves the rest of the axis empty. */
+  size_t months;
 };
 
 struct CompareData {

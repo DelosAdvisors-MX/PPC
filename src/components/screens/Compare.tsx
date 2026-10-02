@@ -12,7 +12,16 @@ export function Compare({ data }: { data: CompareData }) {
 
   return (
     <Screen title="Compared with similar homes" style={{ gap: 14 }}>
-      <div style={{ width: 190, flexShrink: 0, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          width: 190,
+          flexShrink: 0,
+          minWidth: 0,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {data.eyebrow && <div style={EYEBROW}>{data.eyebrow}</div>}
         <div
           style={{
@@ -40,10 +49,13 @@ export function Compare({ data }: { data: CompareData }) {
         <div
           style={{
             fontSize: 13.5,
-            fontWeight: 600,
+            fontWeight: 700,
             lineHeight: 1.3,
             color: COLOR.ink,
             marginTop: 8,
+            // A longer comparison label must wrap inside the column rather
+            // than push the chart off the panel.
+            overflowWrap: "break-word",
           }}
         >
           {data.subtitle}
@@ -62,8 +74,9 @@ export function Compare({ data }: { data: CompareData }) {
               key={chip}
               style={{
                 fontSize: 11,
-                fontWeight: 600,
-                color: COLOR.chipInk,
+                fontWeight: 700,
+                color: COLOR.ink,
+                whiteSpace: "nowrap",
                 background: COLOR.wash,
                 borderRadius: 999,
                 padding: "3px 8px",
@@ -77,8 +90,8 @@ export function Compare({ data }: { data: CompareData }) {
         <div
           style={{
             fontSize: 12,
-            fontWeight: 600,
-            color: COLOR.muted,
+            fontWeight: 700,
+            color: COLOR.chipInk,
             marginTop: "auto",
           }}
         >

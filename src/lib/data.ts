@@ -17,25 +17,25 @@ export const SAMPLE: MeterSnapshot = {
     title: "My Energy Coach",
     live: { kw: 0.84, scaleKw: 5, caption: "Drawing right now" },
     progress: {
-      month: "September",
-      estimateKwh: 560,
-      usedKwh: 467,
-      caption: "So far in September",
+      month: "October",
+      estimateKwh: 650,
+      usedKwh: 106,
+      caption: "So far in October",
       closed: false,
     },
   },
 
   homePrev: {
-    title: "August",
+    title: "September",
     badge: "closed",
     // No dial on a closed month: there is no instantaneous draw to point at.
-    // 650 kWh over 31 days is 0,87 kW held steady, or 21,0 kWh a day.
-    averages: { kw: 0.87, kwhPerDay: 20.97 },
+    // 612 kWh over 30 days is 0,85 kW held steady, or 20,4 kWh a day.
+    averages: { kw: 0.85, kwhPerDay: 20.4 },
     progress: {
-      month: "August",
-      estimateKwh: 640,
-      usedKwh: 650,
-      caption: "102% of estimate",
+      month: "September",
+      estimateKwh: 590,
+      usedKwh: 612,
+      caption: "104% of estimate",
       closed: true,
     },
   },
@@ -54,26 +54,29 @@ export const SAMPLE: MeterSnapshot = {
   },
 
   medium: {
-    title: "August Insight",
-    daily: [
-      24.6, 17.2, 21.2, 16.6, 20.3, 18.9, 22.5, 26.1, 16.3, 19.5, 16.6, 16.7,
-      19.4, 28.6, 23.0, 18.1, 21.0, 23.6, 20.6, 19.2, 29.8, 22.4, 22.9, 18.3,
-      17.2, 17.0, 18.5, 28.6, 23.5, 20.7, 21.1,
-    ],
+    // October is five days old. A month in progress shows only the days it
+    // has; the chart does not pad the rest with zeroes.
+    title: "October Insight",
+    daysInMonth: 31,
+    daily: [22.4, 19.8, 24.1, 18.6, 21.1],
   },
 
   mediumPrev: {
-    title: "July Insight",
+    title: "September Insight",
+    daysInMonth: 30,
     daily: [
-      19.0, 19.7, 27.7, 24.5, 19.4, 19.9, 17.1, 19.4, 20.2, 26.8, 22.0, 18.0,
-      16.5, 21.5, 20.7, 16.1, 28.1, 28.0, 20.4, 20.1, 16.9, 16.0, 19.5, 21.7,
-      22.6, 17.5, 16.1, 19.1, 18.9, 21.7, 24.9,
+      21.4, 18.2, 19.6, 22.8, 17.5, 20.1, 23.4, 19.0, 16.8, 21.7, 23.3, 18.9,
+      20.5, 22.1, 15.2, 19.8, 21.0, 22.6, 20.3, 18.4, 28.5, 20.9, 19.1, 20.7,
+      17.3, 21.5, 21.8, 19.4, 20.0, 20.2,
     ],
   },
 
   high: {
+    // Nine entries, not twelve: the year stops at the last closed month and
+    // the chart leaves the rest of the axis empty rather than drawing months
+    // that have not happened. September is 612 here and 612 in mediumPrev.
     title: "2026 Insight",
-    monthly: [640, 600, 544, 520, 540, 560, 640, 650, 560, 560, 580, 640],
+    monthly: [640, 600, 544, 520, 540, 560, 640, 650, 612],
   },
 
   highPrev: {
@@ -84,8 +87,8 @@ export const SAMPLE: MeterSnapshot = {
   compare: {
     subtitle: "than similar homes, month for month",
     unitLabel: "kWh a month",
-    myKwh: 586,
-    theirKwh: 463,
+    myKwh: 590,
+    theirKwh: 465,
     chips: [
       "Over 140 m²",
       "3 or more people",
@@ -96,11 +99,11 @@ export const SAMPLE: MeterSnapshot = {
   },
 
   comparePrev: {
-    eyebrow: "August",
+    eyebrow: "September",
     subtitle: "than similar homes last month",
-    unitLabel: "kWh in August",
-    myKwh: 650,
-    theirKwh: 512,
+    unitLabel: "kWh in September",
+    myKwh: 612,
+    theirKwh: 486,
     chips: [
       "Over 140 m²",
       "3 or more people",
@@ -116,7 +119,7 @@ export const SAMPLE: MeterSnapshot = {
     // now, and whether the voltage is sane. The equipment id, the DSMR
     // version and the message blocks are dropped.
     lines: [
-      { code: "0-0:1.0.0(260925163155W)", gloss: "reading time" },
+      { code: "0-0:1.0.0(261005163155W)", gloss: "reading time" },
       { code: "1-0:1.8.1(003376.586*kWh)", gloss: "imported, low tariff" },
       { code: "1-0:1.8.2(002774.705*kWh)", gloss: "imported, normal tariff" },
       { code: "1-0:2.8.1(000249.155*kWh)", gloss: "exported, low tariff" },
@@ -126,8 +129,8 @@ export const SAMPLE: MeterSnapshot = {
       { code: "1-0:2.7.0(000000.000*kW)", gloss: "delivering now" },
       { code: "1-0:32.7.0(230.1*V)", gloss: "voltage" },
     ],
-    // Drawn in mint so the eye lands on the figure the Home gauge shows.
-    highlight: "1-0:1.7.0(000000.840*kW)",
+    // A prefix, not the whole line: the value is rewritten every tick.
+    highlight: "1-0:1.7.0",
   },
 };
 

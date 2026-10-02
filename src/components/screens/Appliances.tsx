@@ -26,9 +26,9 @@ export function Appliances({ headline, intro, items }: Props) {
       <div
         style={{
           fontSize: 13.5,
-          fontWeight: 400,
+          fontWeight: 600,
           lineHeight: 1.35,
-          color: COLOR.muted,
+          color: COLOR.chipInk,
           marginTop: 4,
           flexShrink: 0,
         }}
@@ -77,8 +77,8 @@ export function Appliances({ headline, intro, items }: Props) {
                     flexShrink: 0,
                     textAlign: "right",
                     fontSize: 12.5,
-                    fontWeight: 600,
-                    color: COLOR.muted,
+                    fontWeight: 700,
+                    color: COLOR.ink,
                   }}
                 >
                   {decimal(item.share)}%

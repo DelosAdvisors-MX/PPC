@@ -8,21 +8,21 @@
  *
  * Font subset — every character below appears in this data, so lv_font_conv
  * can be given exactly this range and nothing more:
- * " %()*+,-./0123456789:ABCDEHIJLMOSTVWabcdefghiklmnoprstuvwxyz²"
+ * " %()*+,-./0123456789:BCDEHILMOSTVWabcdefghiklmnoprstuvwxyz²"
  */
 namespace sample {
 
-inline constexpr float kAugustDaily[] = {
-    24.6f, 17.2f, 21.2f, 16.6f, 20.3f, 18.9f, 22.5f, 26.1f, 16.3f, 19.5f, 16.6f, 16.7f, 19.4f, 28.6f, 23.0f, 18.1f, 21.0f, 23.6f, 20.6f, 19.2f, 29.8f, 22.4f, 22.9f, 18.3f, 17.2f, 17.0f, 18.5f, 28.6f, 23.5f, 20.7f, 21.1f};
-inline constexpr float kJulyDaily[] = {
-    19.0f, 19.7f, 27.7f, 24.5f, 19.4f, 19.9f, 17.1f, 19.4f, 20.2f, 26.8f, 22.0f, 18.0f, 16.5f, 21.5f, 20.7f, 16.1f, 28.1f, 28.0f, 20.4f, 20.1f, 16.9f, 16.0f, 19.5f, 21.7f, 22.6f, 17.5f, 16.1f, 19.1f, 18.9f, 21.7f, 24.9f};
-inline constexpr float k2026Monthly[] = {
-    640.0f, 600.0f, 544.0f, 520.0f, 540.0f, 560.0f, 640.0f, 650.0f, 560.0f, 560.0f, 580.0f, 640.0f};
-inline constexpr float k2025Monthly[] = {
+inline constexpr float kCurrentDaily[] = {
+    22.4f, 19.8f, 24.1f, 18.6f, 21.1f};
+inline constexpr float kPreviousDaily[] = {
+    21.4f, 18.2f, 19.6f, 22.8f, 17.5f, 20.1f, 23.4f, 19.0f, 16.8f, 21.7f, 23.3f, 18.9f, 20.5f, 22.1f, 15.2f, 19.8f, 21.0f, 22.6f, 20.3f, 18.4f, 28.5f, 20.9f, 19.1f, 20.7f, 17.3f, 21.5f, 21.8f, 19.4f, 20.0f, 20.2f};
+inline constexpr float kCurrentYear[] = {
+    640.0f, 600.0f, 544.0f, 520.0f, 540.0f, 560.0f, 640.0f, 650.0f, 612.0f};
+inline constexpr float kPreviousYear[] = {
     690.0f, 655.0f, 600.0f, 548.0f, 565.0f, 585.0f, 668.0f, 672.0f, 585.0f, 580.0f, 600.0f, 662.0f};
 
 inline constexpr LiveReading kHomeLive = {0.84f, 5.0f, "Drawing right now"};
-inline constexpr PeriodAverages kHomePrevAverages = {0.87f, 20.97f};
+inline constexpr PeriodAverages kHomePrevAverages = {0.85f, 20.4f};
 
 inline constexpr Appliance kAppliances[] = {
     {"Hot Water", ApplianceIcon::HotWater, 1812.0f, 22.6f},
@@ -38,7 +38,7 @@ inline constexpr const char* kCompareChips[] = {
     "Climate zone B"};
 
 inline constexpr TelegramLine kTelegramLines[] = {
-    {"0-0:1.0.0(260925163155W)", "reading time"},
+    {"0-0:1.0.0(261005163155W)", "reading time"},
     {"1-0:1.8.1(003376.586*kWh)", "imported, low tariff"},
     {"1-0:1.8.2(002774.705*kWh)", "imported, normal tariff"},
     {"1-0:2.8.1(000249.155*kWh)", "exported, low tariff"},
@@ -50,19 +50,19 @@ inline constexpr TelegramLine kTelegramLines[] = {
 
 inline constexpr MeterSnapshot kSnapshot = {
     {"My Energy Coach", nullptr, &kHomeLive, nullptr,
-     {"September", 560.0f, 467.0f, "So far in September", false}},
-    {"August", "closed", nullptr, &kHomePrevAverages,
-     {"August", 640.0f, 650.0f, "102% of estimate", true}},
+     {"October", 650.0f, 106.0f, "So far in October", false}},
+    {"September", "closed", nullptr, &kHomePrevAverages,
+     {"September", 590.0f, 612.0f, "104% of estimate", true}},
     {"Electric energy consumption", "This is your estimated power consumption by appliance so far in the year.",
      kAppliances, 5},
-    {"August Insight", kAugustDaily, 31},
-    {"July Insight", kJulyDaily, 31},
-    {"2026 Insight", k2026Monthly},
-    {"2025 Insight", k2025Monthly},
+    {"October Insight", kCurrentDaily, 5, 31},
+    {"September Insight", kPreviousDaily, 30, 30},
+    {"2026 Insight", kCurrentYear, 9},
+    {"2025 Insight", kPreviousYear, 12},
     {nullptr, "than similar homes, month for month", "kWh a month",
-     586.0f, 463.0f, kCompareChips, 4, 1982},
-    {"August", "than similar homes last month", "kWh in August",
-     650.0f, 512.0f, kCompareChips, 4, 1982},
-    {kTelegramLines, 9, "1-0:1.7.0(000000.840*kW)"}};
+     590.0f, 465.0f, kCompareChips, 4, 1982},
+    {"September", "than similar homes last month", "kWh in September",
+     612.0f, 486.0f, kCompareChips, 4, 1982},
+    {kTelegramLines, 9, "1-0:1.7.0"}};
 
 }  // namespace sample

@@ -36,6 +36,15 @@ export const COLOR = {
   /** Appliance bars. */
   orange: "#E85A14",
 
+  /**
+   * Load bands on the gauge. Traffic-light rather than brand colours, because
+   * the dial is the one place on the panel that is a judgement and not a
+   * reading: green is fine, red is "something heavy is on".
+   */
+  loadLow: "#1E9E62",
+  loadMid: "#E8960C",
+  loadHigh: "#D93025",
+
   /** The "Avg." badge. */
   amber: "#FFC93C",
   amberInk: "#3D2A00",
@@ -85,3 +94,18 @@ export const MONO_STACK =
 
 /** Every inline SVG label uses this so it matches the DOM text around it. */
 export const SVG_FONT = FONT_STACK;
+
+/**
+ * Where the gauge changes colour, as a fraction of full scale. On the 5 kW
+ * dial that is 2 kW and 3,5 kW.
+ */
+export const LOAD_BANDS = [
+  { until: 0.4, color: COLOR.loadLow },
+  { until: 0.7, color: COLOR.loadMid },
+  { until: 1.0, color: COLOR.loadHigh },
+] as const;
+
+/** The band a reading falls in. */
+export function loadColor(fraction: number): string {
+  return (LOAD_BANDS.find((band) => fraction < band.until) ?? LOAD_BANDS[2]).color;
+}

@@ -54,10 +54,12 @@ export interface Appliance {
 }
 
 export interface DailyInsight {
-  /** "August Insight" */
+  /** "October Insight" */
   title: string;
-  /** One entry per day the month has. */
+  /** One entry per day so far. A month in progress sends fewer than it has. */
   daily: number[];
+  /** Days the month holds, so a month in progress keeps its true width. */
+  daysInMonth: number;
 }
 
 export interface YearInsight {
@@ -106,6 +108,6 @@ export interface TelegramLine {
 export interface TelegramData {
   /** The lines worth showing, not the whole frame. */
   lines: TelegramLine[];
-  /** The `code` to pick out in mint — normally the instantaneous draw. */
+  /** Code prefix to pick out in mint — normally the instantaneous draw. */
   highlight: string;
 }

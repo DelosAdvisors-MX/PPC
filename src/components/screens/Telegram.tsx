@@ -5,7 +5,7 @@ import type { TelegramLine } from "@/lib/types";
 interface Props {
   /** Only the lines worth reading — the filtering happens in the data. */
   lines: TelegramLine[];
-  /** The `code` to pick out in mint — normally the instantaneous draw. */
+  /** Code prefix to pick out in mint — normally the instantaneous draw. */
   highlight: string;
 }
 
@@ -72,7 +72,7 @@ export function Telegram({ lines, highlight }: Props) {
           }}
         >
           {lines.map((line) => {
-            const lit = line.code === highlight;
+            const lit = line.code.startsWith(highlight);
             return (
               <div
                 key={line.code}
