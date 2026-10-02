@@ -1,6 +1,7 @@
 import { COLOR } from "@/lib/tokens";
 import { decimal, kwh } from "@/lib/format";
 import type { Appliance } from "@/lib/types";
+import { DEFAULT_PANEL, type PanelSpec } from "@/lib/panel";
 import { Screen } from "@/components/ui/Screen";
 import { ApplianceIcon } from "@/components/ui/ApplianceIcon";
 
@@ -8,6 +9,7 @@ interface Props {
   headline: string;
   intro: string;
   items: Appliance[];
+  panel?: PanelSpec;
 }
 
 /**
@@ -15,11 +17,11 @@ interface Props {
  * heaviest appliance; the figure on the right is that appliance's share of
  * the whole year, which is why the bars and the percentages disagree.
  */
-export function Appliances({ headline, intro, items }: Props) {
+export function Appliances({ headline, intro, items, panel = DEFAULT_PANEL }: Props) {
   const heaviest = Math.max(...items.map((item) => item.kwh), 1);
 
   return (
-    <Screen title={headline} style={{ flexDirection: "column" }}>
+    <Screen title={headline} panel={panel} style={{ flexDirection: "column" }}>
       <div style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.15, flexShrink: 0 }}>
         {headline}
       </div>

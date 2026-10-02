@@ -1,4 +1,5 @@
 import { COLOR, MONO_STACK } from "@/lib/tokens";
+import { DEFAULT_PANEL, type PanelSpec } from "@/lib/panel";
 import { Screen } from "@/components/ui/Screen";
 import type { TelegramLine } from "@/lib/types";
 
@@ -7,12 +8,13 @@ interface Props {
   lines: TelegramLine[];
   /** Code prefix to pick out in mint — normally the instantaneous draw. */
   highlight: string;
+  panel?: PanelSpec;
 }
 
 /** The DSMR 5.0 frame straight off the meter. Swipe down from Home. */
-export function Telegram({ lines, highlight }: Props) {
+export function Telegram({ lines, highlight, panel = DEFAULT_PANEL }: Props) {
   return (
-    <Screen title="Your smart meter P1 telegram" style={{ flexDirection: "column", gap: 10 }}>
+    <Screen title="Your smart meter P1 telegram" panel={panel} style={{ flexDirection: "column", gap: 10 }}>
       <div style={{ fontSize: 22, fontWeight: 600, flexShrink: 0 }}>
         Your smart meter P1 telegram
       </div>

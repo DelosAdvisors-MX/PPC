@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { PANEL } from "@/lib/tokens";
+import type { PanelSpec } from "@/lib/panel";
 
 /**
  * Navigation follows the artifact's map:
@@ -24,6 +24,7 @@ export interface Cell {
 
 interface Props {
   cells: Cell[];
+  panel: PanelSpec;
   /** Where to start. Home is (1, 0). */
   start?: { col: number; row: number };
 }
@@ -42,7 +43,7 @@ const RESISTANCE = 0.22;
  */
 const GESTURE = 1;
 
-export function Deck({ cells, start = { col: 1, row: 0 } }: Props) {
+export function Deck({ cells, panel, start = { col: 1, row: 0 } }: Props) {
   const [pos, setPos] = useState(start);
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -148,8 +149,8 @@ export function Deck({ cells, start = { col: 1, row: 0 } }: Props) {
     setDragging(false);
   };
 
-  const offsetX = -pos.col * PANEL.width + drag.x;
-  const offsetY = -pos.row * PANEL.height + drag.y;
+  const offsetX = -pos.col * panel.width + drag.x;
+  const offsetY = -pos.row * panel.height + drag.y;
 
   return (
     <div
@@ -158,7 +159,7 @@ export function Deck({ cells, start = { col: 1, row: 0 } }: Props) {
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
-      style={{ width: PANEL.width, height: PANEL.height }}
+      style={{ width: panel.width, height: panel.height }}
     >
       <div
         className="deck-grid"
@@ -175,10 +176,10 @@ export function Deck({ cells, start = { col: 1, row: 0 } }: Props) {
               className="deck-cell"
               aria-hidden={!current}
               style={{
-                left: cell.col * PANEL.width,
-                top: cell.row * PANEL.height,
-                width: PANEL.width,
-                height: PANEL.height,
+                left: cell.col * panel.width,
+                top: cell.row * panel.height,
+                width: panel.width,
+                height: panel.height,
               }}
             >
               {cell.node}

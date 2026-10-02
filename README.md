@@ -3,7 +3,25 @@
 The "PPC Smart Meter Display — V2" design, built as a Next.js app that renders
 at exactly **480 × 320** — the landscape size of a 3.5 inch panel.
 
-Ten screens, no on-screen chrome, navigated entirely by swipe.
+Ten screens, no on-screen chrome, navigated entirely by swipe. One layout,
+two panels.
+
+| Route | Panel | Device | Design space |
+| --- | --- | --- | --- |
+| `/` | Guition ESP32-S3, AXS15231B | 480 × 320, 3.5" | 480 × 320 @ 1× |
+| `/large` | CrowdPanel ESP32 HMI, DIS08070H | 800 × 480, 7" | 533 × 320 @ 1.5× |
+
+Both panels are **320 design-pixels tall** — the small one natively, the large
+one at 1.5× — so a single vertical rhythm serves both and only the width
+changes. The 7 inch panel is proportionally wider (5:3 against 3:2), and those
+extra 53 design-pixels go to whichever column already flexes. The charts grow;
+nothing is letterboxed; no screen is laid out twice.
+
+Chart widths are derived, not hardcoded (`src/lib/panel.ts`). On the small
+panel the formulas return 182, 422 and 218 — the exact figures the design was
+drawn at — which is how the refactor left it pixel-identical.
+
+Point each device at its own route. Nothing else differs between them.
 
 ## The screen map
 

@@ -2,11 +2,11 @@ import { COLOR, SVG_FONT } from "@/lib/tokens";
 import { MONTH_LABELS } from "@/lib/data";
 import { thousands } from "@/lib/format";
 
-const W = 422;
 const H = 174;
 const BASE = 150;
 const PLOT_LEFT = 40;
-const PLOT_RIGHT = 410;
+/** The line stops short of the right edge so the last dot is not clipped. */
+const PLOT_INSET = 12;
 const AXIS_X = 34;
 
 /**
@@ -24,12 +24,15 @@ const LABELLED_MONTHS = [0, 2, 4, 6, 8, 10];
 const MONTHS_IN_YEAR = 12;
 
 interface Props {
+  /** Drawing width in design pixels; the chart fills whatever it is given. */
+  width: number;
   /** Up to twelve kWh figures, January first. A year in progress sends fewer. */
   values: number[];
   label: string;
 }
 
-export function YearLine({ values, label }: Props) {
+export function YearLine({ width: W, values, label }: Props) {
+  const PLOT_RIGHT = W - PLOT_INSET;
   // Spaced across the whole year rather than across the data, so a year in
   // progress leaves the rest of the axis empty instead of stretching to fill
   // it — the line stops where the months do.

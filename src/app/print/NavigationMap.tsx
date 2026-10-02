@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { PanelSpec } from "@/lib/panel";
 
 /**
  * The screen map, drawn rather than tabulated: every screen in its place, with
@@ -8,18 +9,14 @@ import type { ReactNode } from "react";
  * sheet — the shape of a screen is usually enough to recognise it.
  */
 
+/** Thumbnails are a fixed width so five columns always fit the page; their
+    height follows the panel's own proportions. */
 const THUMB_W = 168;
-const THUMB_H = 112;
-const SCALE = THUMB_W / 480; // 0.35
 const GAP_X = 28;
 const GAP_Y = 40;
 const LABEL_H = 16;
-
 const COL_PITCH = THUMB_W + GAP_X; // 196
-const ROW_PITCH = THUMB_H + LABEL_H + GAP_Y; // 168
 const GRID_W = 4 * COL_PITCH + THUMB_W; // 952
-const GRID_H = 2 * ROW_PITCH + LABEL_H + THUMB_H; // 464
-
 const GUTTER = 96; // room for the row labels
 
 export interface MapCell {
@@ -61,9 +58,14 @@ const VERTICAL: Array<[number, number]> = [
 ];
 
 const thumbX = (column: number) => column * COL_PITCH;
-const thumbY = (row: number) => row * ROW_PITCH + LABEL_H;
 
-export function NavigationMap({ cells }: { cells: MapCell[] }) {
+export function NavigationMap({ cells, panel }: { cells: MapCell[]; panel: PanelSpec }) {
+  const scale = THUMB_W / panel.width;
+  const thumbH = Math.round(panel.height * scale);
+  const rowPitch = thumbH + LABEL_H + GAP_Y;
+  const gridH = 2 * rowPitch + LABEL_H + thumbH;
+  const thumbY = (row: number) => row * rowPitch + LABEL_H;
+
   return (
     <div className="map-wrap" style={{ width: GUTTER + GRID_W }}>
       <div className="map-complexity" style={{ marginLeft: GUTTER, width: GRID_W }}>
@@ -78,12 +80,12 @@ export function NavigationMap({ cells }: { cells: MapCell[] }) {
         ))}
       </div>
 
-      <div className="map-grid" style={{ marginLeft: GUTTER, width: GRID_W, height: GRID_H }}>
+      <div className="map-grid" style={{ marginLeft: GUTTER, width: GRID_W, height: gridH }}>
         <svg
           className="map-lines"
           width={GRID_W}
-          height={GRID_H}
-          viewBox={`0 0 ${GRID_W} ${GRID_H}`}
+          height={gridH}
+          viewBox={`0 0 ${GRID_W} ${gridH}`}
           aria-hidden="true"
         >
           <defs>
@@ -101,7 +103,7 @@ export function NavigationMap({ cells }: { cells: MapCell[] }) {
           </defs>
 
           {HORIZONTAL.map(([column, row]) => {
-            const y = thumbY(row) + THUMB_H / 2;
+            const y = thumbY(row) + thumbH / 2;
             return (
               <line
                 key={`h${column}-${row}`}
@@ -123,7 +125,7 @@ export function NavigationMap({ cells }: { cells: MapCell[] }) {
               <line
                 key={`v${column}-${row}`}
                 x1={x}
-                y1={thumbY(row) + THUMB_H + 5}
+                y1={thumbY(row) + thumbH + 5}
                 x2={x}
                 y2={thumbY(row + 1) - 5}
                 stroke="#9AA3AD"
@@ -151,12 +153,12 @@ export function NavigationMap({ cells }: { cells: MapCell[] }) {
             <span className="map-cell-label" style={{ width: THUMB_W }}>
               {cell.label}
             </span>
-            <div className="map-thumb" style={{ width: THUMB_W, height: THUMB_H }}>
+            <div className="map-thumb" style={{ width: THUMB_W, height: thumbH }}>
               <div
                 style={{
-                  width: 480,
-                  height: 320,
-                  transform: `scale(${SCALE})`,
+                  width: panel.width,
+                  height: panel.height,
+                  transform: `scale(${scale})`,
                   transformOrigin: "top left",
                 }}
               >

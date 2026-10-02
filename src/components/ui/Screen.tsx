@@ -1,24 +1,27 @@
 import type { CSSProperties, ReactNode } from "react";
-import { COLOR, PANEL } from "@/lib/tokens";
+import { COLOR } from "@/lib/tokens";
+import { DEFAULT_PANEL, type PanelSpec } from "@/lib/panel";
 
 interface Props {
   children: ReactNode;
   /** Layout for the screen's own content box. */
   style?: CSSProperties;
   title: string;
+  /** Which panel this is being drawn for. Defaults to the 3.5 inch one. */
+  panel?: PanelSpec;
 }
 
-/** The 480 x 320 canvas every screen is drawn on. */
-export function Screen({ children, style, title }: Props) {
+/** The canvas every screen is drawn on, in the panel's design pixels. */
+export function Screen({ children, style, title, panel = DEFAULT_PANEL }: Props) {
   return (
     <section
       aria-label={title}
       style={{
-        width: PANEL.width,
-        height: PANEL.height,
+        width: panel.width,
+        height: panel.height,
         boxSizing: "border-box",
         overflow: "hidden",
-        padding: PANEL.padding,
+        padding: panel.padding,
         background: COLOR.surface,
         display: "flex",
         ...style,

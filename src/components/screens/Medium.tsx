@@ -1,16 +1,17 @@
 import { COLOR } from "@/lib/tokens";
 import { kwhDecimal } from "@/lib/format";
 import type { DailyInsight } from "@/lib/types";
+import { DEFAULT_PANEL, chartWidth, type PanelSpec } from "@/lib/panel";
 import { Screen, CARD, EYEBROW } from "@/components/ui/Screen";
 import { DailyBars } from "@/components/ui/DailyBars";
 import { InsightHeader } from "./InsightHeader";
 
 /** One month, day by day. */
-export function Medium({ data }: { data: DailyInsight }) {
+export function Medium({ data, panel = DEFAULT_PANEL }: { data: DailyInsight ; panel?: PanelSpec }) {
   const average = data.daily.reduce((sum, v) => sum + v, 0) / data.daily.length;
 
   return (
-    <Screen title={data.title} style={{ flexDirection: "column", gap: 10 }}>
+    <Screen title={data.title} panel={panel} style={{ flexDirection: "column", gap: 10 }}>
       <InsightHeader title={data.title} stat={kwhDecimal(average)} statLabel="Avg. daily" />
 
       <div style={CARD}>
@@ -36,7 +37,7 @@ export function Medium({ data }: { data: DailyInsight }) {
           </span>
         </div>
 
-        <DailyBars values={data.daily} daysInMonth={data.daysInMonth} label={data.title} />
+        <DailyBars width={chartWidth.card(panel)} values={data.daily} daysInMonth={data.daysInMonth} label={data.title} />
       </div>
     </Screen>
   );

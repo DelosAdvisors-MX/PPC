@@ -3,7 +3,6 @@ import { decimal } from "@/lib/format";
 import { zeroBasedTicks } from "./scale";
 import { topRoundedBar } from "./shapes";
 
-const W = 422;
 const H = 174;
 const BASE = 150; // the zero line; bars grow up from here
 const TOP = 14; // where the top tick sits
@@ -11,6 +10,8 @@ const AXIS_X = 34; // left edge of the plot, labels sit to its left
 const RADIUS = 3;
 
 interface Props {
+  /** Drawing width in design pixels; the chart fills whatever it is given. */
+  width: number;
   /** One kWh figure per day so far. */
   values: number[];
   /** Days the month holds. Bars are spaced across all of them. */
@@ -23,7 +24,7 @@ interface Props {
  * rule. The y axis starts at zero and ends on a round number, so the bars can
  * be read as quantities rather than just compared with each other.
  */
-export function DailyBars({ values, daysInMonth, label }: Props) {
+export function DailyBars({ width: W, values, daysInMonth, label }: Props) {
   const days = values.length;
   const peak = Math.max(...values);
   const peakIndex = values.indexOf(peak);

@@ -1,42 +1,45 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { PANEL } from "@/lib/tokens";
+import type { PanelSpec } from "@/lib/panel";
 
 /**
- * Holds the panel at exactly 480 x 320 CSS pixels and scales it to whatever
- * viewport it lands in. On the 3.5 inch screen the scale is 1 and nothing
- * moves; on a desktop browser it grows so the design can be checked at size.
+ * Holds the panel at its design size and scales it to the device.
+ *
+ * Two scales multiply here. The panel's own — 1 on the 3.5 inch screen, 1.5
+ * on the 7 inch one — turns design pixels into device pixels. The fit scale
+ * then shrinks or grows that to whatever viewport it lands in, which is 1 on
+ * the real hardware and only matters when the design is being reviewed in a
+ * desktop browser.
  */
-export function Stage({ children }: { children: ReactNode }) {
-  const [scale, setScale] = useState(1);
+export function Stage({ panel, children }: { panel: PanelSpec; children: ReactNode }) {
+  const [fit, setFit] = useState(1);
 
   useEffect(() => {
-    const fit = () => {
+    const measure = () => {
       const next = Math.min(
-        window.innerWidth / PANEL.width,
-        window.innerHeight / PANEL.height,
+        window.innerWidth / panel.deviceWidth,
+        window.innerHeight / panel.deviceHeight,
       );
-      // Never shrink below a readable size; the panel itself is always >= 1.
-      setScale(next > 0 ? next : 1);
+      setFit(next > 0 ? next : 1);
     };
-    fit();
-    window.addEventListener("resize", fit);
-    window.addEventListener("orientationchange", fit);
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("orientationchange", measure);
     return () => {
-      window.removeEventListener("resize", fit);
-      window.removeEventListener("orientationchange", fit);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
     };
-  }, []);
+  }, [panel]);
 
   return (
     <div className="stage">
       <div
         className="stage-panel"
         style={{
-          width: PANEL.width,
-          height: PANEL.height,
-          transform: `scale(${scale})`,
+          width: panel.width,
+          height: panel.height,
+          transform: `scale(${panel.scale * fit})`,
         }}
       >
         {children}

@@ -1,20 +1,21 @@
 import { COLOR } from "@/lib/tokens";
 import { percentHigher, thousands } from "@/lib/format";
 import type { CompareData } from "@/lib/types";
+import { DEFAULT_PANEL, LAYOUT, chartWidth, type PanelSpec } from "@/lib/panel";
 import { Screen, CARD, EYEBROW } from "@/components/ui/Screen";
 import { CompareBars } from "@/components/ui/CompareBars";
 
 /** This home against similar homes. The last page to the right. */
-export function Compare({ data }: { data: CompareData }) {
+export function Compare({ data, panel = DEFAULT_PANEL }: { data: CompareData; panel?: PanelSpec }) {
   const delta = percentHigher(data.myKwh, data.theirKwh);
   const higher = delta >= 0;
   const accent = higher ? COLOR.magenta : COLOR.blue;
 
   return (
-    <Screen title="Compared with similar homes" style={{ gap: 14 }}>
+    <Screen title="Compared with similar homes" panel={panel} style={{ gap: LAYOUT.COMPARE_GAP }}>
       <div
         style={{
-          width: 190,
+          width: LAYOUT.COMPARE_COLUMN,
           flexShrink: 0,
           minWidth: 0,
           overflow: "hidden",
@@ -101,7 +102,7 @@ export function Compare({ data }: { data: CompareData }) {
 
       <div style={CARD}>
         <div style={{ ...EYEBROW, height: 18, flexShrink: 0 }}>{data.unitLabel}</div>
-        <CompareBars myKwh={data.myKwh} theirKwh={data.theirKwh} unitLabel={data.unitLabel} />
+        <CompareBars width={chartWidth.compare(panel)} myKwh={data.myKwh} theirKwh={data.theirKwh} unitLabel={data.unitLabel} />
       </div>
     </Screen>
   );

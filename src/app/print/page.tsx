@@ -6,6 +6,7 @@ import { Medium } from "@/components/screens/Medium";
 import { High } from "@/components/screens/High";
 import { Compare } from "@/components/screens/Compare";
 import { Telegram } from "@/components/screens/Telegram";
+import { PANELS, type PanelSpec } from "@/lib/panel";
 import { NavigationMap, type MapCell } from "./NavigationMap";
 import "./print.css";
 
@@ -92,51 +93,64 @@ const SHEETS: Sheet[] = [
  * to right — and the previous-period row is drawn above the current one, which
  * is the direction the legend describes: swipe up goes one period back.
  */
-const MAP: MapCell[] = [
-  { column: 1, row: 0, label: "Home · September", screen: <Home data={SAMPLE.homePrev} /> },
-  { column: 2, row: 0, label: "Medium · September", screen: <Medium data={SAMPLE.mediumPrev} /> },
-  { column: 3, row: 0, label: "High · 2025", screen: <High data={SAMPLE.highPrev} /> },
-  { column: 4, row: 0, label: "Compare · September", screen: <Compare data={SAMPLE.comparePrev} /> },
+const mapFor = (panel: PanelSpec): MapCell[] => [
+  { column: 1, row: 0, label: "Home · September", screen: <Home data={SAMPLE.homePrev} panel={panel} /> },
+  { column: 2, row: 0, label: "Medium · September", screen: <Medium data={SAMPLE.mediumPrev} panel={panel} /> },
+  { column: 3, row: 0, label: "High · 2025", screen: <High data={SAMPLE.highPrev} panel={panel} /> },
+  { column: 4, row: 0, label: "Compare · September", screen: <Compare data={SAMPLE.comparePrev} panel={panel} /> },
 
-  { column: 0, row: 1, label: "Appliances", screen: <Appliances {...SAMPLE.appliances} /> },
-  { column: 1, row: 1, label: "Home", screen: <Home data={SAMPLE.home} /> },
-  { column: 2, row: 1, label: "Medium · October", screen: <Medium data={SAMPLE.medium} /> },
-  { column: 3, row: 1, label: "High · 2026", screen: <High data={SAMPLE.high} /> },
-  { column: 4, row: 1, label: "Compare", screen: <Compare data={SAMPLE.compare} /> },
+  { column: 0, row: 1, label: "Appliances", screen: <Appliances {...SAMPLE.appliances} panel={panel} /> },
+  { column: 1, row: 1, label: "Home", screen: <Home data={SAMPLE.home} panel={panel} /> },
+  { column: 2, row: 1, label: "Medium · October", screen: <Medium data={SAMPLE.medium} panel={panel} /> },
+  { column: 3, row: 1, label: "High · 2026", screen: <High data={SAMPLE.high} panel={panel} /> },
+  { column: 4, row: 1, label: "Compare", screen: <Compare data={SAMPLE.compare} panel={panel} /> },
 
   {
     column: 1,
     row: 2,
     label: "P1 telegram",
-    screen: <Telegram lines={SAMPLE.telegram.lines} highlight={SAMPLE.telegram.highlight} />,
+    screen: <Telegram lines={SAMPLE.telegram.lines} highlight={SAMPLE.telegram.highlight} panel={panel} />,
   },
 ];
 
-function Cover() {
+function MapSheet({ panel, lead }: { panel: PanelSpec; lead: boolean }) {
   const asOf = new Date().toISOString().slice(0, 10);
   return (
     <section className="sheet">
       <div className="cover-head">
         <div>
-          <div className="cover-title">PPC Smart Meter Display</div>
+          <div className="cover-title">
+            {lead ? "PPC Smart Meter Display" : "The same screens, 7 inch"}
+          </div>
           <div className="cover-sub">
-            The screen map · {SHEETS.length} screens, each 480 × 320 on a 3.5 inch panel
+            {panel.label} · {SHEETS.length} screens
+            {lead ? "" : " · one layout, widened rather than letterboxed"}
           </div>
         </div>
         <div className="cover-date">as of {asOf}</div>
       </div>
 
-      <NavigationMap cells={MAP} />
+      <NavigationMap cells={mapFor(panel)} panel={panel} />
 
-      <div className="legend">
-        <b>Sideways</b> moves along a row, and complexity rises left to right: Appliances is a
-        list, Compare is a judgement. <b>Up</b> goes one period back — the same screen, last month
-        or last year. <b>Down from Home</b> reaches the raw meter output. Every line above is
-        travelled in both directions, and there is no other way through: the panel shows no
-        chrome, so the gestures are the whole navigation. Appliances has no previous period and
-        the telegram hangs under Home alone, so moving sideways off the n − 1 row drops you back
-        to the current one wherever the next column has no previous screen.
-      </div>
+      {lead ? (
+        <div className="legend">
+          <b>Sideways</b> moves along a row, and complexity rises left to right: Appliances is a
+          list, Compare is a judgement. <b>Up</b> goes one period back — the same screen, last
+          month or last year. <b>Down from Home</b> reaches the raw meter output. Every line above
+          is travelled in both directions, and there is no other way through: the panel shows no
+          chrome, so the gestures are the whole navigation. Appliances has no previous period and
+          the telegram hangs under Home alone, so moving sideways off the n − 1 row drops you back
+          to the current one wherever the next column has no previous screen.
+        </div>
+      ) : (
+        <div className="legend">
+          Both panels are 320 design-pixels tall — the 3.5 inch one natively, the 7 inch one at
+          1.5× — so a single vertical rhythm serves both and only the width changes. The 7 inch
+          panel is proportionally wider, and those extra 53 design-pixels go to whichever column
+          already flexes: the charts grow, nothing is letterboxed, and no screen is laid out
+          twice. The pages that follow are the 3.5 inch panel.
+        </div>
+      )}
     </section>
   );
 }
@@ -144,7 +158,8 @@ function Cover() {
 export default function PrintPage() {
   return (
     <div className="print-root">
-      <Cover />
+      <MapSheet panel={PANELS.small} lead />
+      <MapSheet panel={PANELS.large} lead={false} />
       {SHEETS.map((sheet, index) => (
         <section className="sheet" key={sheet.title}>
           <div className="sheet-head">

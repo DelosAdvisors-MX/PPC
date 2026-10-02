@@ -2,29 +2,35 @@ import { COLOR, SVG_FONT } from "@/lib/tokens";
 import { thousands } from "@/lib/format";
 import { topRoundedBar } from "./shapes";
 
-const W = 218;
 const H = 238;
 const BASE = 190;
 const TALLEST = 174;
-const BAR_W = 66;
 const RADIUS = 7;
-const MINE_X = 26;
-const THEIRS_X = 126;
+/** Bar width and the gap between them, as shares of the chart — 66 and 34 of
+    218 on the small panel. */
+const BAR_SHARE = 0.303;
+const GAP_SHARE = 0.156;
 
 interface Props {
+  /** Drawing width in design pixels; the chart fills whatever it is given. */
+  width: number;
   myKwh: number;
   theirKwh: number;
   unitLabel: string;
 }
 
 /** This home against the comparison group's average — two bars, one axis. */
-export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
+export function CompareBars({ width: W, myKwh, theirKwh, unitLabel }: Props) {
+  const barWidth = Math.round(W * BAR_SHARE);
+  const pairWidth = barWidth * 2 + Math.round(W * GAP_SHARE);
+  const mineX = Math.round((W - pairWidth) / 2);
+  const theirsX = mineX + pairWidth - barWidth;
   const scale = TALLEST / Math.max(myKwh, theirKwh, 1);
   const top = (v: number) => BASE - v * scale;
 
   const bars = [
-    { x: MINE_X, value: myKwh, fill: COLOR.magenta },
-    { x: THEIRS_X, value: theirKwh, fill: COLOR.neutralBar },
+    { x: mineX, value: myKwh, fill: COLOR.magenta },
+    { x: theirsX, value: theirKwh, fill: COLOR.neutralBar },
   ];
 
   return (
@@ -40,7 +46,7 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
       {bars.map((bar) => (
         <path
           key={bar.x}
-          d={topRoundedBar(bar.x, top(bar.value), BAR_W, BASE - top(bar.value), RADIUS)}
+          d={topRoundedBar(bar.x, top(bar.value), barWidth, BASE - top(bar.value), RADIUS)}
           fill={bar.fill}
         />
       ))}
@@ -48,7 +54,7 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
       {bars.map((bar) => (
         <text
           key={bar.x}
-          x={bar.x + BAR_W / 2}
+          x={bar.x + barWidth / 2}
           y={(top(bar.value) - 5).toFixed(1)}
           textAnchor="middle"
           fontFamily={SVG_FONT}
@@ -61,7 +67,7 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
       ))}
 
       <text
-        x={MINE_X + BAR_W / 2}
+        x={mineX + barWidth / 2}
         y={210}
         textAnchor="middle"
         fontFamily={SVG_FONT}
@@ -72,7 +78,7 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
         Your home
       </text>
       <text
-        x={THEIRS_X + BAR_W / 2}
+        x={theirsX + barWidth / 2}
         y={210}
         textAnchor="middle"
         fontFamily={SVG_FONT}
@@ -83,7 +89,7 @@ export function CompareBars({ myKwh, theirKwh, unitLabel }: Props) {
         Similar
       </text>
       <text
-        x={THEIRS_X + BAR_W / 2}
+        x={theirsX + barWidth / 2}
         y={226}
         textAnchor="middle"
         fontFamily={SVG_FONT}

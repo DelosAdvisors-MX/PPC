@@ -1,6 +1,7 @@
 import { COLOR } from "@/lib/tokens";
 import { decimal, kwh } from "@/lib/format";
 import type { HomeScreenData } from "@/lib/types";
+import { DEFAULT_PANEL, LAYOUT, chartWidth, type PanelSpec } from "@/lib/panel";
 import { Screen } from "@/components/ui/Screen";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { Gauge } from "@/components/ui/Gauge";
@@ -15,7 +16,7 @@ const CAPTION = {
 } as const;
 
 /** One figure with its caption, used down the closed month's left column. */
-function Stat({ value, unit, caption, size }: { value: string; unit: string; caption: string; size: number }) {
+function Stat({ value, unit, caption, size }: { value: string; unit: string; caption: string; size: number ; panel?: PanelSpec }) {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
@@ -37,12 +38,12 @@ function Stat({ value, unit, caption, size }: { value: string; unit: string; cap
  * at a live reading means nothing once the month is over — and shows what the
  * month averaged instead.
  */
-export function Home({ data }: { data: HomeScreenData }) {
+export function Home({ data, panel = DEFAULT_PANEL }: { data: HomeScreenData; panel?: PanelSpec }) {
   const { live, averages, progress } = data;
 
   return (
-    <Screen title={`Home — ${data.title}`} style={{ gap: 16 }}>
-      <div style={{ width: 250, flexShrink: 0, display: "flex", flexDirection: "column" }}>
+    <Screen title={`Home — ${data.title}`} panel={panel} style={{ gap: LAYOUT.HOME_GAP }}>
+      <div style={{ width: LAYOUT.HOME_COLUMN, flexShrink: 0, display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, height: 44, flexShrink: 0 }}>
           <BrandMark />
           <span
@@ -126,6 +127,7 @@ export function Home({ data }: { data: HomeScreenData }) {
         </div>
 
         <FillBar
+          width={chartWidth.homeFill(panel)}
           usedKwh={progress.usedKwh}
           estimateKwh={progress.estimateKwh}
           closed={progress.closed}

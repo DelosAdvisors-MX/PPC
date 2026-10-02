@@ -1,19 +1,20 @@
 import { COLOR } from "@/lib/tokens";
 import { kwh, thousands } from "@/lib/format";
 import type { YearInsight } from "@/lib/types";
+import { DEFAULT_PANEL, chartWidth, type PanelSpec } from "@/lib/panel";
 import { Screen, CARD, EYEBROW } from "@/components/ui/Screen";
 import { YearLine } from "@/components/ui/YearLine";
 import { InsightHeader } from "./InsightHeader";
 
 /** Twelve months, January first. */
-export function High({ data }: { data: YearInsight }) {
+export function High({ data, panel = DEFAULT_PANEL }: { data: YearInsight ; panel?: PanelSpec }) {
   const total = data.monthly.reduce((sum, v) => sum + v, 0);
   const average = total / data.monthly.length;
   // A year in progress has no year total yet, only a running one.
   const complete = data.monthly.length >= 12;
 
   return (
-    <Screen title={data.title} style={{ flexDirection: "column", gap: 10 }}>
+    <Screen title={data.title} panel={panel} style={{ flexDirection: "column", gap: 10 }}>
       <InsightHeader title={data.title} stat={kwh(average)} statLabel="Avg. monthly" />
 
       <div style={CARD}>
@@ -32,7 +33,7 @@ export function High({ data }: { data: YearInsight }) {
           </span>
         </div>
 
-        <YearLine values={data.monthly} label={data.title} />
+        <YearLine width={chartWidth.card(panel)} values={data.monthly} label={data.title} />
       </div>
     </Screen>
   );
