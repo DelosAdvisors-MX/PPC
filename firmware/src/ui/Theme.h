@@ -6,10 +6,11 @@
 /** Every colour and metric the design uses, in one place. */
 namespace theme {
 
-// Panel geometry, in the design's own pixels.
-inline constexpr int PANEL_WIDTH = 480;
-inline constexpr int PANEL_HEIGHT = 320;
-inline constexpr int PANEL_PADDING = 16;
+// Design-space geometry. The device's own size lives in board/Metrics.h,
+// which scales these: both panels are 320 design-pixels tall.
+inline constexpr int DESIGN_WIDTH = 480;
+inline constexpr int DESIGN_HEIGHT = 320;
+inline constexpr int PADDING = 16;
 
 inline constexpr uint32_t SURFACE = 0xFFFFFF;
 inline constexpr uint32_t INK = 0x101720;

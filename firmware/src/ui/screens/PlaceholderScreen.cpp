@@ -1,5 +1,6 @@
 #include "PlaceholderScreen.h"
 
+#include "../../board/Metrics.h"
 #include "../Fonts.h"
 #include "../Theme.h"
 
@@ -8,8 +9,8 @@ namespace ui {
 void PlaceholderScreen::build(lv_obj_t* root) {
   lv_obj_t* card = lv_obj_create(root);
   lv_obj_remove_style_all(card);
-  lv_obj_set_pos(card, theme::PANEL_PADDING, theme::PANEL_PADDING);
-  lv_obj_set_size(card, theme::PANEL_WIDTH - 2 * theme::PANEL_PADDING, 54);
+  lv_obj_set_pos(card, metrics::PADDING, metrics::PADDING);
+  lv_obj_set_size(card, metrics::WIDTH - 2 * metrics::PADDING, metrics::px(54));
   lv_obj_set_style_bg_color(card, lv_color_hex(accent_), 0);
   lv_obj_set_style_bg_opa(card, LV_OPA_COVER, 0);
   lv_obj_set_style_radius(card, 12, 0);

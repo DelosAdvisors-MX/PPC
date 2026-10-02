@@ -2,14 +2,14 @@
 #include <lvgl.h>
 #include <stdint.h>
 
-namespace hal {
+namespace board {
 
 /** The AXS15231B capacitive panel, read over I2C and fed to LVGL. */
-class TouchPanel {
+class TouchAXS {
  public:
-  TouchPanel() = default;
-  TouchPanel(const TouchPanel&) = delete;
-  TouchPanel& operator=(const TouchPanel&) = delete;
+  TouchAXS() = default;
+  TouchAXS(const TouchAXS&) = delete;
+  TouchAXS& operator=(const TouchAXS&) = delete;
 
   bool begin();
 
@@ -31,4 +31,4 @@ class TouchPanel {
   int16_t last_y_ = 0;
 };
 
-}  // namespace hal
+}  // namespace board

@@ -5,7 +5,7 @@
 class Arduino_DataBus;
 class Arduino_GFX;
 
-namespace hal {
+namespace board {
 
 /**
  * The QSPI panel, and LVGL's view of it.
@@ -15,11 +15,11 @@ namespace hal {
  * constructor — on Arduino, globals are constructed before Serial and before
  * the heap settles, and a failure there looks like a hardware fault.
  */
-class Display {
+class Panel35 {
  public:
-  Display() = default;
-  Display(const Display&) = delete;
-  Display& operator=(const Display&) = delete;
+  Panel35() = default;
+  Panel35(const Panel35&) = delete;
+  Panel35& operator=(const Panel35&) = delete;
 
   bool begin();
   void set_backlight(uint8_t level);
@@ -37,4 +37,4 @@ class Display {
   uint8_t* buffers_[2] = {nullptr, nullptr};
 };
 
-}  // namespace hal
+}  // namespace board

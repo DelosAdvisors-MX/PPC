@@ -1,11 +1,12 @@
-#include "TouchPanel.h"
+#include "TouchAXS.h"
 
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "../board_config.h"
+#include "Metrics.h"
+#include "pins_35.h"
 
-namespace hal {
+namespace board {
 namespace {
 
 /**
@@ -20,13 +21,13 @@ constexpr uint8_t READ_COMMAND[8] = {0xB5, 0xAB, 0xA5, 0x5A, 0x00, 0x00, 0x00, 0
 
 }  // namespace
 
-TouchPanel::Point TouchPanel::read_panel() {
+TouchAXS::Point TouchAXS::read_panel() {
   uint8_t buf[8] = {0};
 
-  Wire.beginTransmission(board::TOUCH_ADDR);
+  Wire.beginTransmission(pins35::TOUCH_ADDR);
   Wire.write(READ_COMMAND, sizeof(READ_COMMAND));
   if (Wire.endTransmission() != 0) return {false, 0, 0};
-  if (Wire.requestFrom(board::TOUCH_ADDR, sizeof(buf)) != sizeof(buf)) return {false, 0, 0};
+  if (Wire.requestFrom(pins35::TOUCH_ADDR, sizeof(buf)) != sizeof(buf)) return {false, 0, 0};
   for (uint8_t& byte : buf) byte = Wire.read();
 
   const uint8_t fingers = buf[1];
@@ -39,19 +40,19 @@ TouchPanel::Point TouchPanel::read_panel() {
   // The panel is mounted portrait and the UI is landscape, so the axes swap.
   // If drags run backwards, flip the sign on one of these two lines.
   const int16_t x = native_y;
-  const int16_t y = board::PANEL_NATIVE_WIDTH - 1 - native_x;
+  const int16_t y = pins35::PANEL_NATIVE_WIDTH - 1 - native_x;
 
-  if (x < 0 || x >= board::SCREEN_WIDTH || y < 0 || y >= board::SCREEN_HEIGHT) {
+  if (x < 0 || x >= pins35::SCREEN_WIDTH || y < 0 || y >= pins35::SCREEN_HEIGHT) {
     return {false, 0, 0};
   }
   return {true, x, y};
 }
 
-void TouchPanel::read_trampoline(lv_indev_t* indev, lv_indev_data_t* data) {
-  static_cast<TouchPanel*>(lv_indev_get_user_data(indev))->read(data);
+void TouchAXS::read_trampoline(lv_indev_t* indev, lv_indev_data_t* data) {
+  static_cast<TouchAXS*>(lv_indev_get_user_data(indev))->read(data);
 }
 
-void TouchPanel::read(lv_indev_data_t* data) {
+void TouchAXS::read(lv_indev_data_t* data) {
   const Point point = read_panel();
   if (point.pressed) {
     last_x_ = point.x;
@@ -64,16 +65,16 @@ void TouchPanel::read(lv_indev_data_t* data) {
   data->point.y = last_y_;
 }
 
-bool TouchPanel::begin() {
-  if (board::TOUCH_RST >= 0) {
-    pinMode(board::TOUCH_RST, OUTPUT);
-    digitalWrite(board::TOUCH_RST, LOW);
+bool TouchAXS::begin() {
+  if (pins35::TOUCH_RST >= 0) {
+    pinMode(pins35::TOUCH_RST, OUTPUT);
+    digitalWrite(pins35::TOUCH_RST, LOW);
     delay(10);
-    digitalWrite(board::TOUCH_RST, HIGH);
+    digitalWrite(pins35::TOUCH_RST, HIGH);
     delay(50);
   }
-  pinMode(board::TOUCH_INT, INPUT);
-  Wire.begin(board::TOUCH_SDA, board::TOUCH_SCL, 400000);
+  pinMode(pins35::TOUCH_INT, INPUT);
+  Wire.begin(pins35::TOUCH_SDA, pins35::TOUCH_SCL, 400000);
 
   indev_ = lv_indev_create();
   lv_indev_set_type(indev_, LV_INDEV_TYPE_POINTER);
@@ -82,4 +83,4 @@ bool TouchPanel::begin() {
   return true;
 }
 
-}  // namespace hal
+}  // namespace board

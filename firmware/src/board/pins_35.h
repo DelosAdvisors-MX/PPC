@@ -2,7 +2,8 @@
 
 // Pin map for the AXS15231B QSPI panel. These came off the working sketch —
 // change them here and nowhere else.
-namespace board {
+/** 3.5 inch Gugxiom / Guition, AXS15231B over QSPI. */
+namespace pins35 {
 
 // Display, QSPI
 constexpr int LCD_CS = 45;
@@ -28,4 +29,4 @@ constexpr int SCREEN_WIDTH = 480;
 constexpr int SCREEN_HEIGHT = 320;
 constexpr uint8_t ROTATION = 1;  // verify against the working sketch
 
-}  // namespace board
+}  // namespace pins35

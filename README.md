@@ -105,6 +105,23 @@ check out against the totals printed on the screens:
 | 2026, monthly   | 7.034 kWh  | 586 kWh/month |
 | 2025, monthly   | 7.410 kWh  | 618 kWh/month |
 
+## Firmware
+
+`firmware/` builds natively for both panels, one target each:
+
+```bash
+cd firmware
+pio run -e panel-35 -t upload    # 3.5" Gugxiom, AXS15231B over QSPI
+pio run -e panel-70 -t upload    # 7.0" CrowPanel DIS08070H, 16-bit RGB
+```
+
+Only the selected board's driver compiles, so neither panel can break the
+other's build. The 7 inch panel is a stream rather than a bus — the LCD_CAM
+peripheral reads its framebuffer out continuously — so it talks to the ESP-IDF
+RGB driver directly rather than through Arduino_GFX. `firmware/README.md`
+covers the bounce-buffer and pixel-clock tuning that the left-edge stripes and
+the lag come down to.
+
 ## Running this on the Gugxiom ESP32-S3 board
 
 Worth being direct about one thing: **the ESP32-S3 cannot render this page on

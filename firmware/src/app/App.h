@@ -1,10 +1,12 @@
 #pragma once
-#include "../hal/Display.h"
-#include "../hal/TouchPanel.h"
+#include "../board/Board.h"
 #include "../ui/Deck.h"
 
 /**
  * The whole panel, owned in one place.
+ *
+ * Which panel is decided at compile time by board/Board.h, so this file is the
+ * same for both targets.
  *
  * Instantiated as a global, so every member's constructor must stay trivial:
  * on Arduino, globals are constructed before Serial exists and before the
@@ -23,7 +25,7 @@ class App {
   static void task_trampoline(void* self);
   void run_lvgl();
 
-  hal::Display display_;
-  hal::TouchPanel touch_;
+  board::ActivePanel panel_;
+  board::ActiveTouch touch_;
   ui::Deck deck_;
 };

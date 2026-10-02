@@ -32,10 +32,11 @@ const theme = `${BANNER}#pragma once
 /** Every colour and metric the design uses, in one place. */
 namespace theme {
 
-// Panel geometry, in the design's own pixels.
-inline constexpr int PANEL_WIDTH = ${PANEL.width};
-inline constexpr int PANEL_HEIGHT = ${PANEL.height};
-inline constexpr int PANEL_PADDING = ${PANEL.padding};
+// Design-space geometry. The device's own size lives in board/Metrics.h,
+// which scales these: both panels are ${PANEL.height} design-pixels tall.
+inline constexpr int DESIGN_WIDTH = ${PANEL.width};
+inline constexpr int DESIGN_HEIGHT = ${PANEL.height};
+inline constexpr int PADDING = ${PANEL.padding};
 
 ${Object.entries(COLOR)
   .map(([name, value]) => `inline constexpr uint32_t ${upperSnake(name)} = ${hex(value)};`)

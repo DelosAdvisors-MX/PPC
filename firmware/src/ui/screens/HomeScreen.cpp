@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "../../board/Metrics.h"
 #include "../Fonts.h"
 #include "../Format.h"
 #include "../Theme.h"
@@ -9,9 +10,9 @@
 namespace ui {
 namespace {
 
-constexpr int32_t PAD = theme::PANEL_PADDING;
-constexpr int32_t LEFT_COLUMN = 250;
-constexpr int32_t RIGHT_X = PAD + LEFT_COLUMN + 16;
+constexpr int32_t PAD = metrics::PADDING;
+constexpr int32_t LEFT_COLUMN = metrics::px(250);
+constexpr int32_t RIGHT_X = PAD + LEFT_COLUMN + metrics::px(16);
 
 lv_obj_t* make_label(lv_obj_t* parent, int32_t x, int32_t y, const lv_font_t* font,
                      uint32_t color) {
