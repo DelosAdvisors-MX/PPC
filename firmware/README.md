@@ -123,13 +123,18 @@ rendering bug and is not one.
   dragging left reveals the tile on the *right*. The design, and the web app,
   do the opposite. Fixing it means taking the gesture off tileview and driving
   `lv_obj_set_tile_id` from our own `LV_EVENT_PRESSING` handler.
-- **Only Home is a real screen.** The other nine tiles are
-  `PlaceholderScreen` cards so the deck can be navigated from the first build.
 - **Fonts are Montserrat**, LVGL's built-ins. The design wants Source Sans 3,
   and the 7" target wants a 72pt face that Montserrat does not ship. Convert
   with `lv_font_conv`; `data/SampleData.h` carries the exact glyph subset in a
   comment so the conversion need not include all of Latin-1. Flash is 4MB on
   the 7" board, so that subset matters.
+- **The telegram is not monospaced.** LVGL ships no proportional-width mono
+  face, and the two bitmap ones it does ship are exactly the pixelated look
+  this design moved away from. The OBIS codes are set in the body face and
+  come out slightly ragged until IBM Plex Mono is converted.
+- **Medium and High have 2px of vertical slack** inside their card on the
+  3.5" panel, 3px on the 7". If a converted font is taller than Montserrat at
+  the same nominal size, that is the first thing to overflow.
 - **Touch is unvalidated on both panels.** The AXS read sequence and the GT911
   address probe are both written from documentation, not from a scope.
 

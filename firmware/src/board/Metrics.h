@@ -35,4 +35,25 @@ inline constexpr float DESIGN_WIDTH = WIDTH / SCALE;
 inline constexpr float DESIGN_HEIGHT = HEIGHT / SCALE;
 inline constexpr int PADDING = px(16);
 
+/** Fixed columns the layouts reserve. */
+inline constexpr int HOME_COLUMN = px(250);
+inline constexpr int HOME_GAP = px(16);
+inline constexpr int COMPARE_COLUMN = px(190);
+inline constexpr int COMPARE_GAP = px(14);
+/** A bordered card's own padding plus its border, both sides. */
+inline constexpr int CARD_INSET = px(26);
+
+inline constexpr int CONTENT_WIDTH = WIDTH - PADDING * 2;
+
+/**
+ * How wide each chart may draw. Derived rather than hardcoded, exactly as the
+ * web app does it, so the charts grow with the panel. On the 3.5 inch panel
+ * these come out at 182, 422 and 218 — the figures the design was drawn at.
+ */
+namespace chart {
+inline constexpr int HOME_FILL = CONTENT_WIDTH - HOME_COLUMN - HOME_GAP;
+inline constexpr int CARD = CONTENT_WIDTH - CARD_INSET;
+inline constexpr int COMPARE = CONTENT_WIDTH - COMPARE_COLUMN - COMPARE_GAP - CARD_INSET;
+}  // namespace chart
+
 }  // namespace metrics

@@ -44,8 +44,7 @@ void Deck::build(lv_obj_t* parent) {
 }
 
 void Deck::update(const MeterSnapshot& snapshot) {
-  home_.update(snapshot);
-  home_previous_.update(snapshot);
+  for (Screen* screen : all_) screen->update(snapshot);
 }
 
 }  // namespace ui

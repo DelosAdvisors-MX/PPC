@@ -4,14 +4,15 @@
 namespace ui {
 
 /**
- * The half dial on the Home screen: a grey track, a blue arc up to the
- * reading, and a needle. 240 x 152, as in the design.
+ * The half dial on the Home screen.
+ *
+ * The arc takes the colour of the load band the reading falls in — green
+ * under 2 kW, amber to 3,5, red above — so the dial is readable across a room
+ * before the number is. The track stays neutral: colouring it too would leave
+ * the arc competing with its own background.
  */
 class Gauge : public ChartWidget {
  public:
-  static constexpr int32_t WIDTH = 240;
-  static constexpr int32_t HEIGHT = 152;
-
   void set_reading(float value, float max);
 
  protected:

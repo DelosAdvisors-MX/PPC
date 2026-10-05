@@ -36,28 +36,29 @@ void show(lv_obj_t* obj, bool visible) {
 }  // namespace
 
 void HomeScreen::build(lv_obj_t* root) {
-  title_ = make_label(root, PAD + 54, PAD + 8, fonts::title(), theme::INK);
-  badge_ = make_label(root, PAD + 54, PAD + 20, fonts::caption(), theme::MUTED);
+  title_ = make_label(root, PAD + metrics::px(54), PAD + metrics::px(8), fonts::title(), theme::INK);
+  badge_ = make_label(root, PAD + metrics::px(54), PAD + metrics::px(20), fonts::caption(), theme::MUTED);
 
-  gauge_.attach(root, PAD, PAD + 50, Gauge::WIDTH, Gauge::HEIGHT);
+  gauge_.attach(root, PAD, PAD + metrics::px(50), LEFT_COLUMN, metrics::px(160));
 
-  reading_ = make_label(root, PAD, PAD + 200, fonts::reading(), theme::INK);
-  reading_caption_ = make_label(root, PAD, PAD + 252, fonts::caption(), theme::MUTED);
+  reading_ = make_label(root, PAD, PAD + metrics::px(200), fonts::reading(), theme::INK);
+  reading_caption_ = make_label(root, PAD, PAD + metrics::px(252), fonts::caption(), theme::MUTED);
 
   // Closed-month column: two averages where the dial would have been.
-  per_day_ = make_label(root, PAD, PAD + 150, fonts::headline(), theme::INK);
-  per_day_caption_ = make_label(root, PAD, PAD + 190, fonts::caption(), theme::MUTED);
+  per_day_ = make_label(root, PAD, PAD + metrics::px(150), fonts::headline(), theme::INK);
+  per_day_caption_ = make_label(root, PAD, PAD + metrics::px(190), fonts::caption(), theme::MUTED);
 
   divider_ = lv_obj_create(root);
   lv_obj_remove_style_all(divider_);
-  lv_obj_set_pos(divider_, PAD, PAD + 128);
-  lv_obj_set_size(divider_, LEFT_COLUMN - 40, 1);
+  lv_obj_set_pos(divider_, PAD, PAD + metrics::px(128));
+  lv_obj_set_size(divider_, LEFT_COLUMN - metrics::px(40), 1);
   lv_obj_set_style_bg_color(divider_, lv_color_hex(theme::GRID_LIGHT), 0);
   lv_obj_set_style_bg_opa(divider_, LV_OPA_COVER, 0);
 
   estimate_ = make_label(root, RIGHT_X, PAD, fonts::caption(), theme::MUTED);
-  fill_.attach(root, RIGHT_X, PAD + 40, FillBar::WIDTH, FillBar::HEIGHT);
-  progress_caption_ = make_label(root, RIGHT_X, PAD + 252, fonts::caption(), theme::MUTED);
+  fill_.attach(root, RIGHT_X, PAD + metrics::px(40), metrics::chart::HOME_FILL,
+              metrics::px(206));
+  progress_caption_ = make_label(root, RIGHT_X, PAD + metrics::px(252), fonts::caption(), theme::MUTED);
 }
 
 void HomeScreen::update(const MeterSnapshot& snapshot) {
@@ -80,14 +81,14 @@ void HomeScreen::update(const MeterSnapshot& snapshot) {
     gauge_.set_reading(data.live->kw, data.live->scale_kw);
     lv_label_set_text(reading_, fmt::decimal(buffer, sizeof(buffer), data.live->kw, 2));
     lv_label_set_text(reading_caption_, data.live->caption);
-    lv_obj_set_y(reading_, PAD + 200);
-    lv_obj_set_y(reading_caption_, PAD + 252);
+    lv_obj_set_y(reading_, PAD + metrics::px(200));
+    lv_obj_set_y(reading_caption_, PAD + metrics::px(252));
   } else if (data.averages != nullptr) {
     // The dial is gone, so the averages rise into the space it left.
     lv_label_set_text(reading_, fmt::decimal(buffer, sizeof(buffer), data.averages->kw, 2));
     lv_label_set_text(reading_caption_, "Average draw");
-    lv_obj_set_y(reading_, PAD + 60);
-    lv_obj_set_y(reading_caption_, PAD + 112);
+    lv_obj_set_y(reading_, PAD + metrics::px(60));
+    lv_obj_set_y(reading_caption_, PAD + metrics::px(112));
     lv_label_set_text(per_day_,
                       fmt::kwh_decimal(buffer, sizeof(buffer), data.averages->kwh_per_day));
     lv_label_set_text(per_day_caption_, "Average per day");

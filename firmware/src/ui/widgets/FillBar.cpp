@@ -11,12 +11,11 @@ namespace ui {
 namespace {
 
 constexpr int32_t PLOT_LEFT = 42;
-constexpr int32_t PLOT_RIGHT = 182;
 constexpr int32_t TOP = 12;   // the 100% line
 constexpr int32_t BASE = 196; // the 0% line
 constexpr int32_t SPAN = BASE - TOP;
-constexpr int32_t BAR_X = 74;
-constexpr int32_t BAR_W = 80;
+/** The bar takes this share of the plot, centred. */
+constexpr float BAR_SHARE = 0.571f;
 constexpr int32_t RADIUS = 8;
 
 }  // namespace
@@ -29,6 +28,10 @@ void FillBar::set_progress(float used_kwh, float estimate_kwh, bool closed) {
 }
 
 void FillBar::draw(lv_layer_t* layer) {
+  const int32_t W = width();
+  const int32_t plot_width = W - PLOT_LEFT;
+  const int32_t bar_w = static_cast<int32_t>(plot_width * BAR_SHARE);
+  const int32_t bar_x = PLOT_LEFT + (plot_width - bar_w) / 2;
   const float ratio = estimate_ > 0.0f ? used_ / estimate_ : 0.0f;
   const bool over = ratio > 1.0f;
   const int32_t top =
@@ -36,12 +39,12 @@ void FillBar::draw(lv_layer_t* layer) {
   const uint32_t accent = closed_ ? theme::MAGENTA : theme::BLUE;
 
   if (!over) {
-    draw::line(layer, local_x(PLOT_LEFT), local_y(TOP), local_x(PLOT_RIGHT), local_y(TOP),
+    draw::line(layer, local_x(PLOT_LEFT), local_y(TOP), local_x(W), local_y(TOP),
                theme::GRID_LIGHT);
   }
-  draw::line(layer, local_x(PLOT_LEFT), local_y(104), local_x(PLOT_RIGHT), local_y(104),
+  draw::line(layer, local_x(PLOT_LEFT), local_y(104), local_x(W), local_y(104),
              theme::GRID_LIGHT);
-  draw::line(layer, local_x(PLOT_LEFT), local_y(BASE), local_x(PLOT_RIGHT), local_y(BASE),
+  draw::line(layer, local_x(PLOT_LEFT), local_y(BASE), local_x(W), local_y(BASE),
              theme::AXIS);
 
   struct Tick {
@@ -54,12 +57,12 @@ void FillBar::draw(lv_layer_t* layer) {
                theme::MUTED, LV_TEXT_ALIGN_RIGHT);
   }
 
-  draw::top_rounded_bar(layer, local_x(BAR_X), local_y(top), BAR_W, BASE - top, RADIUS,
+  draw::top_rounded_bar(layer, local_x(bar_x), local_y(top), bar_w, BASE - top, RADIUS,
                         accent);
 
   if (over) {
     // Drawn over the bar, so "you went past the estimate" is unmistakable.
-    draw::line(layer, local_x(PLOT_LEFT), local_y(TOP), local_x(PLOT_RIGHT), local_y(TOP),
+    draw::line(layer, local_x(PLOT_LEFT), local_y(TOP), local_x(W), local_y(TOP),
                theme::INK, 2, false, 4, 3);
   }
 
@@ -68,7 +71,7 @@ void FillBar::draw(lv_layer_t* layer) {
   const bool inside = top < 24;
   char label[16];
   fmt::kwh(label, sizeof(label), used_);
-  draw::text(layer, local_x(BAR_X), local_y(inside ? top + 10 : top - 24), BAR_W, label,
+  draw::text(layer, local_x(bar_x), local_y(inside ? top + 10 : top - 24), bar_w, label,
              fonts::body(), inside ? theme::SURFACE : theme::INK, LV_TEXT_ALIGN_CENTER);
 }
 

@@ -2,8 +2,12 @@
 #include <lvgl.h>
 
 #include "Screen.h"
+#include "screens/AppliancesScreen.h"
+#include "screens/CompareScreen.h"
+#include "screens/HighScreen.h"
 #include "screens/HomeScreen.h"
-#include "screens/PlaceholderScreen.h"
+#include "screens/MediumScreen.h"
+#include "screens/TelegramScreen.h"
 
 namespace ui {
 
@@ -19,6 +23,10 @@ namespace ui {
  * it. That is upside down against the design's diagram but right side up
  * against its legend: swipe up is still one period back. Rows cannot be
  * negative, which is the other reason the map is shifted down by one.
+ *
+ * Every tile is a real screen. Each one is built once into its tile and then
+ * updated in place, so a new reading re-labels what is already there rather
+ * than rebuilding it.
  *
  * KNOWN GAP: tileview's horizontal gesture is the opposite of what the design
  * asks for. Dragging left reveals the tile on the right; the web app reveals
@@ -47,16 +55,22 @@ class Deck {
 
   lv_obj_t* tileview_ = nullptr;
 
+  // Held by value: LVGL keeps raw pointers back to these, so they must outlive
+  // their tiles.
   HomeScreen home_{HomeScreen::Period::Current};
   HomeScreen home_previous_{HomeScreen::Period::Previous};
-  PlaceholderScreen telegram_{"P1 telegram", 0x12161C};
-  PlaceholderScreen appliances_{"Appliances", 0x2E6FD0};
-  PlaceholderScreen medium_{"Medium - October", 0x2E6FD0};
-  PlaceholderScreen medium_previous_{"Medium - September", 0xD6006E};
-  PlaceholderScreen high_{"High - 2026", 0x2E6FD0};
-  PlaceholderScreen high_previous_{"High - 2025", 0xD6006E};
-  PlaceholderScreen compare_{"Compare", 0x2E6FD0};
-  PlaceholderScreen compare_previous_{"Compare - September", 0xD6006E};
+  TelegramScreen telegram_;
+  AppliancesScreen appliances_;
+  MediumScreen medium_{MediumScreen::Period::Current};
+  MediumScreen medium_previous_{MediumScreen::Period::Previous};
+  HighScreen high_{HighScreen::Period::Current};
+  HighScreen high_previous_{HighScreen::Period::Previous};
+  CompareScreen compare_{CompareScreen::Period::Current};
+  CompareScreen compare_previous_{CompareScreen::Period::Previous};
+
+  /** Every screen, so update() cannot forget one. */
+  Screen* all_[10] = {&home_,  &home_previous_,   &telegram_, &appliances_, &medium_,
+                      &medium_previous_, &high_, &high_previous_, &compare_, &compare_previous_};
 };
 
 }  // namespace ui

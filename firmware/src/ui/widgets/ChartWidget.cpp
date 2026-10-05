@@ -20,6 +20,8 @@ void ChartWidget::event_trampoline(lv_event_t* event) {
 }
 
 void ChartWidget::attach(lv_obj_t* parent, int32_t x, int32_t y, int32_t w, int32_t h) {
+  width_ = w;
+  height_ = h;
   obj_ = lv_obj_create(parent);
   lv_obj_remove_style_all(obj_);
   lv_obj_set_pos(obj_, x, y);

@@ -30,6 +30,10 @@ class ChartWidget {
   /** The LVGL object, so a screen can show or hide the whole widget. */
   lv_obj_t* obj() const { return obj_; }
 
+  /** Drawing size, in device pixels. Charts lay themselves out from this. */
+  int32_t width() const { return width_; }
+  int32_t height() const { return height_; }
+
  protected:
   ChartWidget() = default;
 
@@ -43,6 +47,8 @@ class ChartWidget {
   int32_t local_y(int32_t y) const { return origin_.y + y; }
 
   lv_obj_t* obj_ = nullptr;
+  int32_t width_ = 0;
+  int32_t height_ = 0;
 
  private:
   static void event_trampoline(lv_event_t* event);

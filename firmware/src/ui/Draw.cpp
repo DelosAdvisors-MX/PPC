@@ -41,6 +41,34 @@ void line(lv_layer_t* layer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
   lv_draw_line(layer, &dsc);
 }
 
+void rect(lv_layer_t* layer, int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color,
+          int32_t radius) {
+  if (w <= 0 || h <= 0) return;
+  lv_draw_rect_dsc_t dsc;
+  lv_draw_rect_dsc_init(&dsc);
+  dsc.bg_color = lv_color_hex(color);
+  dsc.bg_opa = LV_OPA_COVER;
+  dsc.radius = radius;
+  lv_area_t area = {x, y, x + w - 1, y + h - 1};
+  lv_draw_rect(layer, &dsc, &area);
+}
+
+void circle(lv_layer_t* layer, int32_t cx, int32_t cy, int32_t r, uint32_t color,
+            uint32_t ring_color, int32_t ring_width) {
+  lv_draw_rect_dsc_t dsc;
+  lv_draw_rect_dsc_init(&dsc);
+  dsc.bg_color = lv_color_hex(color);
+  dsc.bg_opa = LV_OPA_COVER;
+  dsc.radius = LV_RADIUS_CIRCLE;
+  if (ring_width > 0) {
+    dsc.border_color = lv_color_hex(ring_color);
+    dsc.border_width = ring_width;
+    dsc.border_opa = LV_OPA_COVER;
+  }
+  lv_area_t area = {cx - r, cy - r, cx + r, cy + r};
+  lv_draw_rect(layer, &dsc, &area);
+}
+
 void text(lv_layer_t* layer, int32_t x, int32_t y, int32_t w, const char* value,
           const lv_font_t* font, uint32_t color, lv_text_align_t align) {
   lv_draw_label_dsc_t dsc;
@@ -53,6 +81,19 @@ void text(lv_layer_t* layer, int32_t x, int32_t y, int32_t w, const char* value,
 
   lv_area_t area = {x, y, x + w - 1, y + font->line_height};
   lv_draw_label(layer, &dsc, &area);
+}
+
+void halo_text(lv_layer_t* layer, int32_t x, int32_t y, int32_t w, const char* value,
+               const lv_font_t* font, uint32_t color, uint32_t halo, lv_text_align_t align) {
+  // LVGL has no text outline, so the halo is the same string drawn behind the
+  // real one, offset a pixel each way. Enough to keep a peak label readable
+  // where it crosses the line it belongs to.
+  for (const int32_t dx : {-1, 0, 1}) {
+    for (const int32_t dy : {-1, 0, 1}) {
+      if (dx != 0 || dy != 0) text(layer, x + dx, y + dy, w, value, font, halo, align);
+    }
+  }
+  text(layer, x, y, w, value, font, color, align);
 }
 
 }  // namespace draw

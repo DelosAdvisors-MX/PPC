@@ -12,9 +12,6 @@ namespace ui {
  */
 class FillBar : public ChartWidget {
  public:
-  static constexpr int32_t WIDTH = 182;
-  static constexpr int32_t HEIGHT = 206;
-
   void set_progress(float used_kwh, float estimate_kwh, bool closed);
 
  protected:
