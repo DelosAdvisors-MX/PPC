@@ -56,6 +56,42 @@ The stage scales the 480 × 320 canvas to fit whatever viewport it lands in, so
 the design can be checked at size in a desktop browser. On the panel the scale
 is exactly 1 and nothing is resampled.
 
+## Deployed
+
+| | |
+| --- | --- |
+| URL | https://ppc-smart-meter.azurewebsites.net |
+| 3.5" panel | https://ppc-smart-meter.azurewebsites.net/ |
+| 7" panel | https://ppc-smart-meter.azurewebsites.net/large |
+| Subscription | DelosAdvisors · `d63369ca-6ac9-4f33-81c6-369b47b7680f` |
+| Resource group | `rg-ppc-display`, West Europe |
+| Plan | `ppc-display-plan`, Linux B1, always-on |
+
+App Service rather than Static Web Apps, because the app is not static: the
+pages are `force-dynamic` and `/api/meter` is a route handler — the seam a
+real P1 feed plugs into. A static export would have to give that up.
+
+To redeploy:
+
+```bash
+zip -rq /tmp/ppc.zip package.json package-lock.json next.config.ts \
+  tsconfig.json next-env.d.ts src public scripts
+az webapp deploy -n ppc-smart-meter -g rg-ppc-display --src-path /tmp/ppc.zip --type zip
+```
+
+Azure builds it on the server (`SCM_DO_BUILD_DURING_DEPLOYMENT=true`), so the
+zip carries source only — no `node_modules`, no `.next`. Two settings matter
+and are easy to lose:
+
+- `NPM_CONFIG_PRODUCTION=false`, or npm skips devDependencies and the build
+  has no TypeScript to compile with.
+- The `start` script must not pin a port. App Service supplies one in `$PORT`
+  and `next start` honours it only when `-p` is absent.
+
+The deploy command often returns `504 GatewayTimeout`. That is the API giving
+up on the HTTP request, not the build failing — the build carries on. Check it
+with `az webapp log deployment show -n ppc-smart-meter -g rg-ppc-display`.
+
 ## A PDF of every screen
 
 ```bash
