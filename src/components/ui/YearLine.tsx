@@ -10,18 +10,24 @@ const PLOT_INSET = 12;
 const AXIS_X = 34;
 
 /**
- * The y axis is fixed, not fitted: 600 kWh sits at y = 33,4 on every year, so
- * 2025 and 2026 can be compared by flicking between them without the chart
+ * The y axis is fixed, not fitted: the anchor always sits at the same height,
+ * so 2025 and 2026 can be compared by flicking between them without the chart
  * rescaling underneath. Anything past the ceiling is clamped.
+ *
+ * Anchored at 300 kWh for a two-person home, whose months run 195 to 330.
+ * Raise it if the data outgrows it; the ticks follow.
  */
-const PX_PER_KWH = (BASE - 33.4) / 600;
+const AXIS_ANCHOR = 300;
+const PX_PER_KWH = (BASE - 33.4) / AXIS_ANCHOR;
 const CEILING = BASE / PX_PER_KWH;
 /** The axis reads from zero up, so the line's height means something. */
-const TICKS = [0, 200, 400, 600];
-const LABELLED_MONTHS = [0, 2, 4, 6, 8, 10];
+const TICKS = [0, AXIS_ANCHOR / 3, (AXIS_ANCHOR * 2) / 3, AXIS_ANCHOR];
 
 /** The axis is always a whole year, however many months have happened. */
 const MONTHS_IN_YEAR = 12;
+/** Every month is named. At twelve labels they want the smaller size. */
+const LABELLED_MONTHS = Array.from({ length: MONTHS_IN_YEAR }, (_, i) => i);
+const MONTH_LABEL_SIZE = 11;
 
 interface Props {
   /** Drawing width in design pixels; the chart fills whatever it is given. */
@@ -109,8 +115,8 @@ export function YearLine({ width: W, values, label }: Props) {
         strokeLinejoin="round"
       />
 
-      {LABELLED_MONTHS.filter((i) => i < values.length).map((i) => (
-        <circle key={i} cx={x(i).toFixed(1)} cy={y(values[i]).toFixed(1)} r={4.5} fill={COLOR.blue} />
+      {values.map((value, i) => (
+        <circle key={i} cx={x(i).toFixed(1)} cy={y(value).toFixed(1)} r={4} fill={COLOR.blue} />
       ))}
 
       <circle
@@ -147,7 +153,7 @@ export function YearLine({ width: W, values, label }: Props) {
           y={168}
           textAnchor="middle"
           fontFamily={SVG_FONT}
-          fontSize={12}
+          fontSize={MONTH_LABEL_SIZE}
           fontWeight={700}
           fill={i < values.length ? COLOR.muted : COLOR.axis}
         >

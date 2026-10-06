@@ -1,7 +1,14 @@
 import type { MeterSnapshot } from "./types";
 
 /**
- * The sample reading the V2 design was drawn against.
+ * The sample reading: a two-person European home, electricity only.
+ *
+ * Roughly 3.000 kWh a year — in the band a couple without electric heating
+ * actually lands in — which is about a third of what this file used to claim.
+ * Every figure here is tied to the others, so changing one means changing the
+ * rest: September's total is the September point on the year chart and the
+ * figure the comparison uses, the appliance shares are shares of the year so
+ * far, and the daily series averages to what Home reports.
  *
  * The daily and monthly series were recovered from the artifact's SVG
  * geometry and cross-checked against the totals printed on each screen:
@@ -15,11 +22,11 @@ import type { MeterSnapshot } from "./types";
 export const SAMPLE: MeterSnapshot = {
   home: {
     title: "My Energy Coach",
-    live: { kw: 0.84, scaleKw: 5, caption: "Drawing right now" },
+    live: { kw: 0.41, scaleKw: 5, caption: "Drawing right now" },
     progress: {
       month: "October",
-      estimateKwh: 650,
-      usedKwh: 106,
+      estimateKwh: 265,
+      usedKwh: 43,
       caption: "So far in October",
       closed: false,
     },
@@ -29,13 +36,13 @@ export const SAMPLE: MeterSnapshot = {
     title: "September",
     badge: "closed",
     // No dial on a closed month: there is no instantaneous draw to point at.
-    // 612 kWh over 30 days is 0,85 kW held steady, or 20,4 kWh a day.
-    averages: { kw: 0.85, kwhPerDay: 20.4 },
+    // 268 kWh over 30 days is 0,37 kW held steady, or 8,9 kWh a day.
+    averages: { kw: 0.37, kwhPerDay: 8.93 },
     progress: {
       month: "September",
-      estimateKwh: 590,
-      usedKwh: 612,
-      caption: "104% of estimate",
+      estimateKwh: 255,
+      usedKwh: 268,
+      caption: "105% of estimate",
       closed: true,
     },
   },
@@ -45,11 +52,12 @@ export const SAMPLE: MeterSnapshot = {
     intro:
       "This is your estimated power consumption by appliance so far in the year.",
     items: [
-      { id: "hotWater", name: "Hot Water", kwh: 1812, share: 22.6 },
-      { id: "tumbleDryer", name: "Tumble Dryer", kwh: 991, share: 12.4 },
-      { id: "oven", name: "Oven", kwh: 910, share: 11.4 },
-      { id: "hob", name: "Hob", kwh: 853, share: 10.7 },
-      { id: "lighting", name: "Lighting", kwh: 729, share: 9.1 },
+      // Shares of the 2.273 kWh the year has used so far.
+      { id: "hotWater", name: "Hot Water", kwh: 514, share: 22.6 },
+      { id: "tumbleDryer", name: "Tumble Dryer", kwh: 282, share: 12.4 },
+      { id: "oven", name: "Oven", kwh: 259, share: 11.4 },
+      { id: "hob", name: "Hob", kwh: 243, share: 10.7 },
+      { id: "lighting", name: "Lighting", kwh: 207, share: 9.1 },
     ],
   },
 
@@ -58,16 +66,16 @@ export const SAMPLE: MeterSnapshot = {
     // has; the chart does not pad the rest with zeroes.
     title: "October Insight",
     daysInMonth: 31,
-    daily: [22.4, 19.8, 24.1, 18.6, 21.1],
+    daily: [9.1, 7.8, 10.2, 7.6, 8.3],
   },
 
   mediumPrev: {
     title: "September Insight",
     daysInMonth: 30,
     daily: [
-      21.4, 18.2, 19.6, 22.8, 17.5, 20.1, 23.4, 19.0, 16.8, 21.7, 23.3, 18.9,
-      20.5, 22.1, 15.2, 19.8, 21.0, 22.6, 20.3, 18.4, 28.5, 20.9, 19.1, 20.7,
-      17.3, 21.5, 21.8, 19.4, 20.0, 20.2,
+      10.2, 7.8, 8.4, 9.9, 7.5, 8.6, 10.1, 8.2, 7.2, 9.3, 11.0, 8.1, 8.8, 9.5,
+      6.5, 8.5, 9.0, 10.7, 8.7, 7.9, 13.2, 9.0, 8.2, 8.9, 7.4, 9.2, 10.6, 8.3,
+      8.6, 8.7,
     ],
   },
 
@@ -76,19 +84,19 @@ export const SAMPLE: MeterSnapshot = {
     // the chart leaves the rest of the axis empty rather than drawing months
     // that have not happened. September is 612 here and 612 in mediumPrev.
     title: "2026 Insight",
-    monthly: [640, 600, 544, 520, 540, 560, 640, 650, 612],
+    monthly: [265, 240, 215, 195, 205, 250, 310, 325, 268],
   },
 
   highPrev: {
     title: "2025 Insight",
-    monthly: [690, 655, 600, 548, 565, 585, 668, 672, 585, 580, 600, 662],
+    monthly: [272, 248, 220, 198, 208, 255, 318, 332, 275, 232, 240, 262],
   },
 
   compare: {
     subtitle: "than similar homes, month for month",
     unitLabel: "kWh a month",
-    myKwh: 590,
-    theirKwh: 465,
+    myKwh: 253,
+    theirKwh: 199,
     chips: [
       "Over 140 m²",
       "3 or more people",
@@ -102,8 +110,8 @@ export const SAMPLE: MeterSnapshot = {
     eyebrow: "September",
     subtitle: "than similar homes last month",
     unitLabel: "kWh in September",
-    myKwh: 612,
-    theirKwh: 486,
+    myKwh: 268,
+    theirKwh: 212,
     chips: [
       "Over 140 m²",
       "3 or more people",
@@ -120,12 +128,12 @@ export const SAMPLE: MeterSnapshot = {
     // version and the message blocks are dropped.
     lines: [
       { code: "0-0:1.0.0(261005163155W)", gloss: "reading time" },
-      { code: "1-0:1.8.1(003376.586*kWh)", gloss: "imported, low tariff" },
-      { code: "1-0:1.8.2(002774.705*kWh)", gloss: "imported, normal tariff" },
-      { code: "1-0:2.8.1(000249.155*kWh)", gloss: "exported, low tariff" },
-      { code: "1-0:2.8.2(000234.567*kWh)", gloss: "exported, normal tariff" },
+      { code: "1-0:1.8.1(009427.183*kWh)", gloss: "imported, low tariff" },
+      { code: "1-0:1.8.2(007812.455*kWh)", gloss: "imported, normal tariff" },
+      { code: "1-0:2.8.1(000312.044*kWh)", gloss: "exported, low tariff" },
+      { code: "1-0:2.8.2(000198.620*kWh)", gloss: "exported, normal tariff" },
       { code: "0-0:96.14.0(0001)", gloss: "tariff in use" },
-      { code: "1-0:1.7.0(000000.840*kW)", gloss: "drawing now" },
+      { code: "1-0:1.7.0(000000.410*kW)", gloss: "drawing now" },
       { code: "1-0:2.7.0(000000.000*kW)", gloss: "delivering now" },
       { code: "1-0:32.7.0(230.1*V)", gloss: "voltage" },
     ],

@@ -20,13 +20,17 @@ constexpr int32_t AXIS_X = 34;
 constexpr int MONTHS_IN_YEAR = 12;
 
 /**
- * The y axis is fixed, not fitted: 600 kWh sits at the same height on every
- * year, so 2025 and 2026 can be compared by flicking between them.
+ * The y axis is fixed, not fitted: the anchor always sits at the same height,
+ * so 2025 and 2026 compare without the chart rescaling underneath.
+ *
+ * Anchored at 300 kWh for a two-person home, whose months run 195 to 330.
  */
-constexpr float PX_PER_KWH = (BASE - 33.4f) / 600.0f;
+constexpr int AXIS_ANCHOR = 300;
+constexpr float PX_PER_KWH = (BASE - 33.4f) / AXIS_ANCHOR;
 constexpr float CEILING = BASE / PX_PER_KWH;
-constexpr int TICKS[] = {0, 200, 400, 600};
-constexpr int LABELLED[] = {0, 2, 4, 6, 8, 10};
+constexpr int TICKS[] = {0, AXIS_ANCHOR / 3, AXIS_ANCHOR * 2 / 3, AXIS_ANCHOR};
+/** Every month is named, so the labels run the whole year. */
+constexpr int MONTH_COUNT = 12;
 constexpr const char* MONTHS[] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
                                   "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
@@ -87,9 +91,9 @@ void YearLine::draw(lv_layer_t* layer) {
                local_y(y_of(monthly_[i + 1])), theme::BLUE, metrics::px(4), true);
   }
 
-  for (const int i : LABELLED) {
-    if (static_cast<size_t>(i) >= months_) continue;
-    draw::circle(layer, local_x(x_of(i)), local_y(y_of(monthly_[i])), metrics::px(5),
+  // A dot on every month that has one, now that every month is named.
+  for (size_t i = 0; i < months_; i++) {
+    draw::circle(layer, local_x(x_of(i)), local_y(y_of(monthly_[i])), metrics::px(4),
                  theme::BLUE);
   }
 
@@ -109,9 +113,10 @@ void YearLine::draw(lv_layer_t* layer) {
                   above ? LV_TEXT_ALIGN_CENTER
                         : (peak_index > months_ / 2 ? LV_TEXT_ALIGN_RIGHT : LV_TEXT_ALIGN_LEFT));
 
-  for (const int i : LABELLED) {
+  for (int i = 0; i < MONTH_COUNT; i++) {
     // Months still to come keep their label but fade.
-    draw::text(layer, local_x(x_of(i) - 25), local_y(H - 22), 50, MONTHS[i], fonts::caption(),
+    draw::text(layer, local_x(x_of(i) - metrics::px(16)), local_y(H - 22), metrics::px(32),
+               MONTHS[i], fonts::micro(),
                static_cast<size_t>(i) < months_ ? theme::MUTED : theme::AXIS,
                LV_TEXT_ALIGN_CENTER);
   }

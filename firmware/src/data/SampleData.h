@@ -13,23 +13,23 @@
 namespace sample {
 
 inline constexpr float kCurrentDaily[] = {
-    22.4f, 19.8f, 24.1f, 18.6f, 21.1f};
+    9.1f, 7.8f, 10.2f, 7.6f, 8.3f};
 inline constexpr float kPreviousDaily[] = {
-    21.4f, 18.2f, 19.6f, 22.8f, 17.5f, 20.1f, 23.4f, 19.0f, 16.8f, 21.7f, 23.3f, 18.9f, 20.5f, 22.1f, 15.2f, 19.8f, 21.0f, 22.6f, 20.3f, 18.4f, 28.5f, 20.9f, 19.1f, 20.7f, 17.3f, 21.5f, 21.8f, 19.4f, 20.0f, 20.2f};
+    10.2f, 7.8f, 8.4f, 9.9f, 7.5f, 8.6f, 10.1f, 8.2f, 7.2f, 9.3f, 11.0f, 8.1f, 8.8f, 9.5f, 6.5f, 8.5f, 9.0f, 10.7f, 8.7f, 7.9f, 13.2f, 9.0f, 8.2f, 8.9f, 7.4f, 9.2f, 10.6f, 8.3f, 8.6f, 8.7f};
 inline constexpr float kCurrentYear[] = {
-    640.0f, 600.0f, 544.0f, 520.0f, 540.0f, 560.0f, 640.0f, 650.0f, 612.0f};
+    265.0f, 240.0f, 215.0f, 195.0f, 205.0f, 250.0f, 310.0f, 325.0f, 268.0f};
 inline constexpr float kPreviousYear[] = {
-    690.0f, 655.0f, 600.0f, 548.0f, 565.0f, 585.0f, 668.0f, 672.0f, 585.0f, 580.0f, 600.0f, 662.0f};
+    272.0f, 248.0f, 220.0f, 198.0f, 208.0f, 255.0f, 318.0f, 332.0f, 275.0f, 232.0f, 240.0f, 262.0f};
 
-inline constexpr LiveReading kHomeLive = {0.84f, 5.0f, "Drawing right now"};
-inline constexpr PeriodAverages kHomePrevAverages = {0.85f, 20.4f};
+inline constexpr LiveReading kHomeLive = {0.41f, 5.0f, "Drawing right now"};
+inline constexpr PeriodAverages kHomePrevAverages = {0.37f, 8.93f};
 
 inline constexpr Appliance kAppliances[] = {
-    {"Hot Water", ApplianceIcon::HotWater, 1812.0f, 22.6f},
-    {"Tumble Dryer", ApplianceIcon::TumbleDryer, 991.0f, 12.4f},
-    {"Oven", ApplianceIcon::Oven, 910.0f, 11.4f},
-    {"Hob", ApplianceIcon::Hob, 853.0f, 10.7f},
-    {"Lighting", ApplianceIcon::Lighting, 729.0f, 9.1f}};
+    {"Hot Water", ApplianceIcon::HotWater, 514.0f, 22.6f},
+    {"Tumble Dryer", ApplianceIcon::TumbleDryer, 282.0f, 12.4f},
+    {"Oven", ApplianceIcon::Oven, 259.0f, 11.4f},
+    {"Hob", ApplianceIcon::Hob, 243.0f, 10.7f},
+    {"Lighting", ApplianceIcon::Lighting, 207.0f, 9.1f}};
 
 inline constexpr const char* kCompareChips[] = {
     "Over 140 m²",
@@ -39,20 +39,20 @@ inline constexpr const char* kCompareChips[] = {
 
 inline constexpr TelegramLine kTelegramLines[] = {
     {"0-0:1.0.0(261005163155W)", "reading time"},
-    {"1-0:1.8.1(003376.586*kWh)", "imported, low tariff"},
-    {"1-0:1.8.2(002774.705*kWh)", "imported, normal tariff"},
-    {"1-0:2.8.1(000249.155*kWh)", "exported, low tariff"},
-    {"1-0:2.8.2(000234.567*kWh)", "exported, normal tariff"},
+    {"1-0:1.8.1(009427.183*kWh)", "imported, low tariff"},
+    {"1-0:1.8.2(007812.455*kWh)", "imported, normal tariff"},
+    {"1-0:2.8.1(000312.044*kWh)", "exported, low tariff"},
+    {"1-0:2.8.2(000198.620*kWh)", "exported, normal tariff"},
     {"0-0:96.14.0(0001)", "tariff in use"},
-    {"1-0:1.7.0(000000.840*kW)", "drawing now"},
+    {"1-0:1.7.0(000000.410*kW)", "drawing now"},
     {"1-0:2.7.0(000000.000*kW)", "delivering now"},
     {"1-0:32.7.0(230.1*V)", "voltage"}};
 
 inline constexpr MeterSnapshot kSnapshot = {
     {"My Energy Coach", nullptr, &kHomeLive, nullptr,
-     {"October", 650.0f, 106.0f, "So far in October", false}},
+     {"October", 265.0f, 43.0f, "So far in October", false}},
     {"September", "closed", nullptr, &kHomePrevAverages,
-     {"September", 590.0f, 612.0f, "104% of estimate", true}},
+     {"September", 255.0f, 268.0f, "105% of estimate", true}},
     {"Electric energy consumption", "This is your estimated power consumption by appliance so far in the year.",
      kAppliances, 5},
     {"October Insight", kCurrentDaily, 5, 31},
@@ -60,9 +60,9 @@ inline constexpr MeterSnapshot kSnapshot = {
     {"2026 Insight", kCurrentYear, 9},
     {"2025 Insight", kPreviousYear, 12},
     {nullptr, "than similar homes, month for month", "kWh a month",
-     590.0f, 465.0f, kCompareChips, 4, 1982},
+     253.0f, 199.0f, kCompareChips, 4, 1982},
     {"September", "than similar homes last month", "kWh in September",
-     612.0f, 486.0f, kCompareChips, 4, 1982},
+     268.0f, 212.0f, kCompareChips, 4, 1982},
     {kTelegramLines, 9, "1-0:1.7.0"}};
 
 }  // namespace sample

@@ -11,9 +11,17 @@ import type { MeterSnapshot, TelegramLine } from "./types";
  */
 export function demoKilowatts(elapsedMs: number): number {
   const t = elapsedMs / 1000;
-  const swell = Math.sin((2 * Math.PI * t) / 22);
-  const flicker = Math.sin((2 * Math.PI * t) / 3.1);
-  return Math.min(4.8, Math.max(0.06, 2.3 + 1.95 * swell + 0.22 * flicker));
+  // Standing load: fridge, router, standby. A two-person home sits here most
+  // of the day.
+  const base = 0.3;
+  // The slow drift of lights, a television, a laptop.
+  const household = 0.85 * (0.5 + 0.5 * Math.sin((2 * Math.PI * t) / 19));
+  // One heavy appliance cycling — a water heater or the oven. Narrow, because
+  // that is how it behaves: mostly off, briefly dominant. Raised to a sixth
+  // power so it ramps through amber on the way to red rather than stepping.
+  const appliance = 2.7 * Math.pow(Math.max(0, Math.sin((2 * Math.PI * t) / 28)), 6);
+  const flicker = 0.05 * Math.sin((2 * Math.PI * t) / 2.3);
+  return Math.min(4.9, Math.max(0.08, base + household + appliance + flicker));
 }
 
 const pad = (value: number, width: number) => String(value).padStart(width, "0");
@@ -44,8 +52,10 @@ function liveTelegramLines(
   elapsedMs: number,
   now: Date,
 ): TelegramLine[] {
-  const importedBase = 3376.586;
-  const imported = importedBase + (elapsedMs / 3_600_000) * 2.3;
+  // Matches the register the telegram starts from, creeping at the home's
+  // own average draw.
+  const importedBase = 9427.183;
+  const imported = importedBase + (elapsedMs / 3_600_000) * 0.9;
 
   return lines.map((line) => {
     if (line.code.startsWith(READING_TIME)) {
