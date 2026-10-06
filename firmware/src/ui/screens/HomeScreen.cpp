@@ -39,7 +39,7 @@ void HomeScreen::build(lv_obj_t* root) {
   title_ = make_label(root, PAD + metrics::px(54), PAD + metrics::px(8), fonts::title(), theme::INK);
   badge_ = make_label(root, PAD + metrics::px(54), PAD + metrics::px(20), fonts::caption(), theme::MUTED);
 
-  gauge_.attach(root, PAD, PAD + metrics::px(50), LEFT_COLUMN, metrics::px(160));
+  gauge_.attach(root, PAD, PAD + metrics::px(46), LEFT_COLUMN, metrics::px(216));
 
   reading_ = make_label(root, PAD, PAD + metrics::px(200), fonts::reading(), theme::INK);
   reading_caption_ = make_label(root, PAD, PAD + metrics::px(252), fonts::caption(), theme::MUTED);
@@ -78,12 +78,18 @@ void HomeScreen::update(const MeterSnapshot& snapshot) {
   show(per_day_caption_, !live);
 
   if (live) {
+    // The dial carries its own reading, so the label below it is hidden and
+    // only the caption stays, centred under the dial.
     gauge_.set_reading(data.live->kw, data.live->scale_kw);
-    lv_label_set_text(reading_, fmt::decimal(buffer, sizeof(buffer), data.live->kw, 2));
+    show(reading_, false);
     lv_label_set_text(reading_caption_, data.live->caption);
-    lv_obj_set_y(reading_, PAD + metrics::px(200));
-    lv_obj_set_y(reading_caption_, PAD + metrics::px(252));
+    lv_obj_set_width(reading_caption_, LEFT_COLUMN);
+    lv_obj_set_style_text_align(reading_caption_, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_y(reading_caption_, PAD + metrics::px(266));
   } else if (data.averages != nullptr) {
+    show(reading_, true);
+    lv_obj_set_width(reading_caption_, LV_SIZE_CONTENT);
+    lv_obj_set_style_text_align(reading_caption_, LV_TEXT_ALIGN_LEFT, 0);
     // The dial is gone, so the averages rise into the space it left.
     lv_label_set_text(reading_, fmt::decimal(buffer, sizeof(buffer), data.averages->kw, 2));
     lv_label_set_text(reading_caption_, "Average draw");

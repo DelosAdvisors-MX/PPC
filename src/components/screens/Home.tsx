@@ -72,14 +72,11 @@ export function Home({ data, panel = DEFAULT_PANEL }: { data: HomeScreenData; pa
 
         {live && (
           <>
+            {/* The dial carries its own reading, so nothing repeats it below. */}
             <Gauge value={live.kw} max={live.scaleKw} label={live.caption} />
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 2 }}>
-              <span style={{ fontSize: 48, fontWeight: 700, lineHeight: 1, color: COLOR.ink }}>
-                {decimal(live.kw, 2)}
-              </span>
-              <span style={{ fontSize: 20, fontWeight: 700, color: COLOR.muted }}>kW</span>
+            <div style={{ ...CAPTION, marginTop: 2, textAlign: "center", width: 250 }}>
+              {live.caption}
             </div>
-            <div style={{ ...CAPTION, marginTop: 4 }}>{live.caption}</div>
           </>
         )}
 
