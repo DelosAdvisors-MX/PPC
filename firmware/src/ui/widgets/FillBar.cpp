@@ -15,7 +15,9 @@ constexpr int32_t TOP = 12;   // the 100% line
 constexpr int32_t BASE = 196; // the 0% line
 constexpr int32_t SPAN = BASE - TOP;
 /** The bar takes this share of the plot, centred. */
-constexpr float BAR_SHARE = 0.571f;
+// Wide: on a panel this small the bar is the reading, and the white either
+// side of it says nothing.
+constexpr float BAR_SHARE = 0.74f;
 constexpr int32_t RADIUS = 8;
 
 }  // namespace

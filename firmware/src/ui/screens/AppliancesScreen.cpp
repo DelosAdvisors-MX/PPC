@@ -12,7 +12,7 @@ namespace {
 
 constexpr int32_t GLYPH = 26;
 constexpr int32_t SHARE_W = 46;
-constexpr int32_t BAR_H = 9;
+constexpr int32_t BAR_H = 14;
 
 }  // namespace
 
@@ -51,7 +51,7 @@ void AppliancesScreen::build(lv_obj_t* root) {
     lv_obj_remove_style_all(row.track);
     lv_obj_set_pos(row.track, text_x, y + metrics::px(24));
     lv_obj_set_size(row.track, bar_w, metrics::px(BAR_H));
-    lv_obj_set_style_radius(row.track, metrics::px(5), 0);
+    lv_obj_set_style_radius(row.track, metrics::px(7), 0);
     lv_obj_set_style_bg_color(row.track, lv_color_hex(theme::WASH), 0);
     lv_obj_set_style_bg_opa(row.track, LV_OPA_COVER, 0);
     lv_obj_remove_flag(row.track, LV_OBJ_FLAG_SCROLLABLE);
@@ -60,7 +60,7 @@ void AppliancesScreen::build(lv_obj_t* root) {
     lv_obj_remove_style_all(row.fill);
     lv_obj_set_pos(row.fill, 0, 0);
     lv_obj_set_height(row.fill, metrics::px(BAR_H));
-    lv_obj_set_style_radius(row.fill, metrics::px(5), 0);
+    lv_obj_set_style_radius(row.fill, metrics::px(7), 0);
     lv_obj_set_style_bg_color(row.fill, lv_color_hex(theme::ORANGE), 0);
     lv_obj_set_style_bg_opa(row.fill, LV_OPA_COVER, 0);
 

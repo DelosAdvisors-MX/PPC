@@ -9,8 +9,9 @@ const TOP = 12; // the 100% line
 const BASE = 196; // the 0% line
 const SPAN = BASE - TOP;
 const RADIUS = 8;
-/** The bar takes this share of the plot, centred — 80 of 140 on the small panel. */
-const BAR_SHARE = 0.571;
+/** The bar takes this share of the plot, centred. Wide: on a panel this small
+    the bar is the reading, and the white either side of it says nothing. */
+const BAR_SHARE = 0.74;
 
 interface Props {
   /** Drawing width in design pixels; the chart fills whatever it is given. */

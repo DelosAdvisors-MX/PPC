@@ -38,7 +38,10 @@ export function DailyBars({ width: W, values, daysInMonth, label }: Props) {
   // October should look like five days into October, not like a five-day
   // month. Same reasoning as the year chart leaving its unlived months empty.
   const band = (W - AXIS_X) / Math.max(daysInMonth, days);
-  const barW = Math.max(4, Math.min(11, band * 0.72));
+  // Bars as wide as the month allows, leaving only a hairline between them.
+  // On a 3.5 inch panel a 2px gap is already a gap; anything more is width
+  // thrown away.
+  const barW = Math.max(4, band - Math.max(1.5, band * 0.14));
   const barX = (i: number) => AXIS_X + i * band + (band - barW) / 2;
   const centre = (i: number) => AXIS_X + i * band + band / 2;
 
@@ -92,7 +95,7 @@ export function DailyBars({ width: W, values, daysInMonth, label }: Props) {
         x2={W}
         y2={y(average).toFixed(1)}
         stroke={COLOR.muted}
-        strokeWidth={1.5}
+        strokeWidth={2.5}
         strokeDasharray="5 4"
       />
 

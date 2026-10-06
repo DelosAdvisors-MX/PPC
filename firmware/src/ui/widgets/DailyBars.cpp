@@ -53,7 +53,10 @@ void DailyBars::draw(lv_layer_t* layer) {
 
   const size_t slots = days_in_month_ > days_ ? days_in_month_ : days_;
   const float band = scale_x / slots;
-  const int32_t bar_w = static_cast<int32_t>(lroundf(fminf(metrics::px(11), band * 0.72f)));
+  // Bars as wide as the month allows, leaving only a hairline between them.
+  // On a panel this small a 2px gap is already a gap; more is width wasted.
+  const int32_t bar_w = static_cast<int32_t>(
+      lroundf(fmaxf(metrics::px(4), band - fmaxf(metrics::px(1.5f), band * 0.14f))));
   const auto bar_x = [&](size_t i) {
     return AXIS_X + static_cast<int32_t>(lroundf(i * band + (band - bar_w) / 2.0f));
   };
@@ -81,7 +84,7 @@ void DailyBars::draw(lv_layer_t* layer) {
 
   const int32_t average_y = y_of(average);
   draw::line(layer, local_x(AXIS_X), local_y(average_y), local_x(W), local_y(average_y),
-             theme::MUTED, 2, false, 5, 4);
+             theme::MUTED, metrics::px(3), false, 5, 4);
 
   fmt::decimal(label, sizeof(label), peak);
   draw::halo_text(layer, local_x(centre(peak_index) - 30), local_y(y_of(peak) - 20), 60, label,

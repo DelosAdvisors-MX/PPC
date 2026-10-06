@@ -104,19 +104,19 @@ export function YearLine({ width: W, values, label }: Props) {
         d={line}
         fill="none"
         stroke={COLOR.blue}
-        strokeWidth={2.5}
+        strokeWidth={4}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
 
       {LABELLED_MONTHS.filter((i) => i < values.length).map((i) => (
-        <circle key={i} cx={x(i).toFixed(1)} cy={y(values[i]).toFixed(1)} r={3.5} fill={COLOR.blue} />
+        <circle key={i} cx={x(i).toFixed(1)} cy={y(values[i]).toFixed(1)} r={4.5} fill={COLOR.blue} />
       ))}
 
       <circle
         cx={x(peakIndex).toFixed(1)}
         cy={y(peak).toFixed(1)}
-        r={5}
+        r={6}
         fill={COLOR.magenta}
         stroke={COLOR.surface}
         strokeWidth={2}

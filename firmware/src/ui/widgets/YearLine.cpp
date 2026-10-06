@@ -84,16 +84,16 @@ void YearLine::draw(lv_layer_t* layer) {
 
   for (size_t i = 0; i + 1 < months_; i++) {
     draw::line(layer, local_x(x_of(i)), local_y(y_of(monthly_[i])), local_x(x_of(i + 1)),
-               local_y(y_of(monthly_[i + 1])), theme::BLUE, 3, true);
+               local_y(y_of(monthly_[i + 1])), theme::BLUE, metrics::px(4), true);
   }
 
   for (const int i : LABELLED) {
     if (static_cast<size_t>(i) >= months_) continue;
-    draw::circle(layer, local_x(x_of(i)), local_y(y_of(monthly_[i])), metrics::px(4),
+    draw::circle(layer, local_x(x_of(i)), local_y(y_of(monthly_[i])), metrics::px(5),
                  theme::BLUE);
   }
 
-  draw::circle(layer, local_x(x_of(peak_index)), local_y(y_of(peak)), metrics::px(5),
+  draw::circle(layer, local_x(x_of(peak_index)), local_y(y_of(peak)), metrics::px(6),
                theme::MAGENTA, theme::SURFACE, 2);
 
   // The peak figure sits above its dot unless the year peaks near the top of

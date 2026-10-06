@@ -15,8 +15,8 @@ constexpr int32_t BASE = 190;
 constexpr int32_t TALLEST = 174;
 constexpr int32_t RADIUS = 7;
 /** Bar width and the gap between, as shares of the chart. */
-constexpr float BAR_SHARE = 0.303f;
-constexpr float GAP_SHARE = 0.156f;
+constexpr float BAR_SHARE = 0.38f;
+constexpr float GAP_SHARE = 0.11f;
 
 }  // namespace
 

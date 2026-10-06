@@ -58,8 +58,8 @@ export function Appliances({ headline, intro, items, panel = DEFAULT_PANEL }: Pr
                 <span
                   style={{
                     flexGrow: 1,
-                    height: 9,
-                    borderRadius: 5,
+                    height: 14,
+                    borderRadius: 7,
                     background: COLOR.wash,
                   }}
                 >
@@ -67,8 +67,8 @@ export function Appliances({ headline, intro, items, panel = DEFAULT_PANEL }: Pr
                     style={{
                       display: "block",
                       width: `${((item.kwh / heaviest) * 100).toFixed(1)}%`,
-                      height: 9,
-                      borderRadius: 5,
+                      height: 14,
+                      borderRadius: 7,
                       background: COLOR.orange,
                     }}
                   />

@@ -8,8 +8,8 @@ const TALLEST = 174;
 const RADIUS = 7;
 /** Bar width and the gap between them, as shares of the chart — 66 and 34 of
     218 on the small panel. */
-const BAR_SHARE = 0.303;
-const GAP_SHARE = 0.156;
+const BAR_SHARE = 0.38;
+const GAP_SHARE = 0.11;
 
 interface Props {
   /** Drawing width in design pixels; the chart fills whatever it is given. */
